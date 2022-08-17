@@ -1,3 +1,4 @@
+OpenSSL_Client/resources/keys/*.pem
 resources/*.pem
 test.sh
 

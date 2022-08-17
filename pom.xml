@@ -93,6 +93,7 @@
         <module>TLS-Mitm</module>
         <module>TraceTool</module>
         <module>TLS-Proxy</module>
+        <module>OpenSSL_Client</module>
     </modules>
     <dependencies>
         <dependency>
