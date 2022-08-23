@@ -1,12 +1,11 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- * <p>
+ *
  * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- * <p>
+ *
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
-
 package main;
 
 import com.beust.jcommander.JCommander;
@@ -18,18 +17,19 @@ import de.rub.nds.tlsattacker.core.config.delegate.ListDelegate;
 import de.rub.nds.tlsattacker.core.exceptions.WorkflowExecutionException;
 import de.rub.nds.tlsattacker.core.protocol.message.*;
 import de.rub.nds.tlsattacker.core.state.State;
-import de.rub.nds.tlsattacker.core.workflow.WorkflowExecutor;
-import de.rub.nds.tlsattacker.core.workflow.WorkflowExecutorFactory;
-import de.rub.nds.tlsattacker.core.workflow.WorkflowTrace;
-import de.rub.nds.tlsattacker.core.workflow.WorkflowTraceSerializer;
+import de.rub.nds.tlsattacker.core.workflow.*;
 import de.rub.nds.tlsattacker.core.workflow.action.ReceiveAction;
 import de.rub.nds.tlsattacker.core.workflow.action.SendAction;
+import de.rub.nds.tlsattacker.core.workflow.factory.WorkflowTraceType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
+import javax.sound.sampled.Line;
+import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,6 +38,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Random;
 
 import static sun.misc.SignalHandler.SIG_DFL;
@@ -100,22 +105,28 @@ public class Client {
         JCommander commander = new JCommander(config);
         try {
             commander.parse(args);
+//            commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
                 return;
             }
             ListDelegate list = (ListDelegate) config.getDelegate(ListDelegate.class);
+
             if (list.isSet()) {
                 list.plotListing();
                 return;
             }
-
             try {
 
                 while (!stop_soon) {
+                    stop_soon = true;
+
+                    config.getGeneralDelegate().setDebug(false);
+
                     Config tlsConfig = config.createConfig();
                     Client TlsClient = new Client();
-                    config.getGeneralDelegate().setDebug(false);
+
+
                     /**
                      * 2022-08-15 21:35:22 TODO: 1. 在启动客户端之前，向fuzz传输信号，通知准备进行握手 2. 2022-08-15 目前暂时想到的 传输信号方式使用 socket
                      * 本侧作为客户端socket_client，fuzz侧作为服务端socket_server 3. socket_client 写入当前时间unix 4. socket_server
@@ -124,87 +135,157 @@ public class Client {
                      *
                      */
                     // 创建socket udp 客户端
-                    DatagramSocket socket_client = new DatagramSocket(9997);
-                    try {
+//                    DatagramSocket socket_client = new DatagramSocket(9997);
+//                    try {
+//
+//                        // 发送
+//                        long curTime = System.currentTimeMillis();
+//                        byte[] socket_data = long2byte(curTime);
+//                        System.out.println("socket_data: " + socket_data);
+//                        DatagramPacket socket_packet = new DatagramPacket(socket_data, socket_data.length,
+//                                InetAddress.getByName(config.getSocket_host()), config.getSocket_port());
+//                        // 发送数据包
+//                        socket_client.send(socket_packet);
+//                        System.out.println("send data success");
+//
+//                        // 接受
+//                        byte[] receive_buff = new byte[100];
+//                        boolean rec_ok = false;
+//                        while (!rec_ok) {
+//                            // 存放数据包的容器
+//                            DatagramPacket rec_packet = new DatagramPacket(receive_buff, 0, receive_buff.length);
+//                            socket_client.receive(rec_packet);
+//                            byte[] rec_packetData = rec_packet.getData();
+//                            String rec_data_str = new String(rec_packetData, StandardCharsets.UTF_8);
+//
+//                            System.out.println("rec_data: " + rec_data_str);
+//                            System.out.println("rec_data len : " + rec_data_str.length());
+//                            if (rec_data_str.startsWith("OK")) {
+//
+//                                System.out.println("receive ok!!!!!!!!!!");
+//                                rec_ok = true;
+//                            }
+//                        }
+//                    } catch (IOException ioex) {
+//                        System.out.println(ioex);
+//                    } finally {
+//                        if (socket_client != null) {
+//                            try {
+//                                socket_client.close();
+//                            } catch (Exception ioe) {
+//
+//                            }
+//                        }
+//                    }
 
-                        // 发送
-                        long curTime = System.currentTimeMillis();
-                        byte[] socket_data = long2byte(curTime);
-                        System.out.println("socket_data: " + socket_data);
-                        DatagramPacket socket_packet = new DatagramPacket(socket_data, socket_data.length,
-                                InetAddress.getByName(config.getSocket_host()), config.getSocket_port());
-                        // 发送数据包
-                        socket_client.send(socket_packet);
-                        System.out.println("send data success");
 
-                        // 接受
-                        byte[] receive_buff = new byte[100];
-                        boolean rec_ok = false;
-                        while (!rec_ok) {
-                            // 存放数据包的容器
-                            DatagramPacket rec_packet = new DatagramPacket(receive_buff, 0, receive_buff.length);
-                            socket_client.receive(rec_packet);
-                            byte[] rec_packetData = rec_packet.getData();
-                            String rec_data_str = new String(rec_packetData, StandardCharsets.UTF_8);
+//                    WorkflowTrace trace = new WorkflowTrace();
+                    final int[] index = {0};
+                    if (config.getWorkflowsOutFiles() != null) {
+                        if (!Files.exists(Path.of(config.getWorkflowsOutFiles()))) {
+                            Files.createDirectory(Path.of(config.getWorkflowsOutFiles()));
+                        }
+                    }
+                    if (config.getWorkflowsInFiles() != null) {
+                        LOGGER.debug("Reading workflow trace files from " + config.getWorkflowsInFiles());
+                        Files.walkFileTree(Path.of(config.getWorkflowsInFiles()), new FileVisitor<Path>() {
+                            /**
+                             * 在访问任意目录前调用；
+                             *
+                             * @param dir
+                             * @param attrs
+                             * @return
+                             * @throws IOException
+                             */
+                            @Override
+                            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 
-                            System.out.println("rec_data: " + rec_data_str);
-                            System.out.println("rec_data len : " + rec_data_str.length());
-                            if (rec_data_str.startsWith("OK")) {
-
-                                System.out.println("receive ok!!!!!!!!!!");
-                                rec_ok = true;
+                                LOGGER.debug("pre visit dir : " + dir);
+                                return FileVisitResult.CONTINUE;
                             }
-                        }
-                    } catch (IOException ioex) {
-                        System.out.println(ioex);
-                    } finally {
-                        if (socket_client != null) {
-                            try {
-                                socket_client.close();
-                            } catch (Exception ioe) {
 
+                            /**
+                             * 访问到每个文件时调用；
+                             *
+                             * @param file
+                             * @param attrs
+                             * @return
+                             * @throws IOException
+                             */
+                            @Override
+                            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+//                                LOGGER.debug(" visit file is : "+ file);
+
+                                try {
+                                    index[0] += 1;
+
+                                    WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(file.toFile()));
+                                    State state = TlsClient.startTlsClient(tlsConfig, trace);
+
+                                    if (config.getWorkflowsOutFiles() != null) {
+
+
+                                        trace = state.getWorkflowTrace();
+                                        String outfilepre = config.getWorkflowsOutFiles();
+                                        String file_str = file.toString();
+                                        String temp_str[] = file_str.split("\\\\");
+                                        String old_file_name = temp_str[temp_str.length - 1];
+                                        String new_file_name = "Execute_" + old_file_name;
+                                        outfilepre = outfilepre + new_file_name;
+//                                        LOGGER.debug(" after file name : "+new_file_name +" ; after path: "+outfilepre);
+                                        LOGGER.debug("Writing workflow trace to " + outfilepre);
+                                        WorkflowTraceSerializer.write(new File(outfilepre), trace);
+                                    }
+
+                                } catch (Exception e) {
+//                                    e.printStackTrace();
+                                }
+
+                                return FileVisitResult.CONTINUE;
                             }
-                        }
-                    }
 
-                    WorkflowTrace trace = null;
-                    if (config.getWorkflowInput() != null) {
-                        LOGGER.debug("Reading workflow trace from " + config.getWorkflowInput());
-                        trace = WorkflowTraceSerializer
-                                .secureRead(new FileInputStream(new File(config.getWorkflowInput())));
-                    }
-                    for (int i = 1; i <= 9; i++) {
-                        Random random1 = new Random();
-                        int random2 = random1.nextInt(9) + 1;
-                        switch (random2) {
-                            case 1:
-                                trace.addTlsAction(new SendAction(new ClientHelloMessage()));
-                            case 2:
-                                trace.addTlsAction(new ReceiveAction(new ServerHelloMessage()));
-                            case 3:
-                                trace.addTlsAction(new ReceiveAction(new CertificateMessage()));
-                            case 4:
-                                trace.addTlsAction(new ReceiveAction(new ServerHelloDoneMessage()));
-                            case 5:
-                                trace.addTlsAction(new SendAction((new RSAClientKeyExchangeMessage())));
-                            case 6:
-                                trace.addTlsAction(new SendAction((new ChangeCipherSpecMessage())));
-                            case 7:
-                                trace.addTlsAction(new SendAction((new FinishedMessage())));
-                            case 8:
-                                trace.addTlsAction(new ReceiveAction(new ChangeCipherSpecMessage()));
-                            case 9:
-                                trace.addTlsAction(new ReceiveAction(new FinishedMessage()));
-                        }
-                    }
+                            /**
+                             * 在访问文件失败是调用
+                             *
+                             * @param file
+                             * @param exc
+                             * @return
+                             * @throws IOException
+                             */
+                            @Override
+                            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                                LOGGER.warn("visit failed : " + file);
+                                return FileVisitResult.CONTINUE;
+                            }
 
-                    State state = TlsClient.startTlsClient(tlsConfig, trace);
+                            /**
+                             * 在访问任意目录完成后调用；
+                             *
+                             * @param dir
+                             * @param exc
+                             * @return
+                             * @throws IOException
+                             */
+                            @Override
+                            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                                return FileVisitResult.CONTINUE;
+                            }
+                        });
 
-                    if (config.getWorkflowOutput() != null) {
-                        trace = state.getWorkflowTrace();
-                        LOGGER.debug("Writing workflow trace to " + config.getWorkflowOutput());
-                        WorkflowTraceSerializer.write(new File(config.getWorkflowOutput()), trace);
+
                     }
+//                    if (config.getWorkflowInput() != null) {
+//                        LOGGER.debug("Reading workflow trace from " + config.getWorkflowInput());
+//                        trace = WorkflowTraceSerializer
+//                            .secureRead(new FileInputStream(new File(config.getWorkflowInput())));
+//                    }
+
+
+//                    if (config.getWorkflowOutput() != null) {
+//                        trace = state.getWorkflowTrace();
+//                        LOGGER.debug("Writing workflow trace to " + config.getWorkflowOutput());
+//                        WorkflowTraceSerializer.write(new File(config.getWorkflowOutput()), trace);
+//                    }
 
                 }
             } catch (Exception e) {
@@ -231,7 +312,7 @@ public class Client {
             workflowExecutor.executeWorkflow();
         } catch (WorkflowExecutionException ex) {
             LOGGER.warn(
-                    "The TLS protocol flow was not executed completely, follow the debug messages for more information.");
+                "The TLS protocol flow was not executed completely, follow the debug messages for more information.");
             LOGGER.debug(ex.getLocalizedMessage(), ex);
         }
         return state;
@@ -255,7 +336,7 @@ public class Client {
     /**
      * long to byte
      *
-     * @param res
+     * @param  res
      * @return
      */
     public static byte[] long2byte(long res) {
@@ -270,7 +351,7 @@ public class Client {
     /**
      * bytes to hex
      *
-     * @param bytes
+     * @param  bytes
      * @return
      */
     public static String bytes2hex(byte[] bytes) {

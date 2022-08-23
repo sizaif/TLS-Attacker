@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflowTrace>
+    <Send>
+        <messages>
+            <ClientHello>
+                <extensions>
+                    <!--9.Extension - Server Name-->
+                    <EncryptedServerNameIndicationExtension></EncryptedServerNameIndicationExtension>
+                    <ServerNameIndicationExtension></ServerNameIndicationExtension>
+
+                    <!--10.Extension - Status Request-->
+                    <CertificateStatusRequestExtension></CertificateStatusRequestExtension>
+                    <CertificateStatusRequestV2Extension></CertificateStatusRequestV2Extension>
+                    <!--11.Extension - Supported Groups     -->
+                    <EllipticCurves></EllipticCurves>
+                    <!--12.EC Point Formats-->
+                    <ECPointFormat></ECPointFormat>
+                    <!--13.Extension - Signature Algorithms-->
+                    <SignatureAndHashAlgorithmsExtension></SignatureAndHashAlgorithmsExtension>
+                    <!--14.Extension - Renegotiation Info-->
+                    <RenegotiationInfoExtension></RenegotiationInfoExtension>
+                    <!--15.Extension - SCT 完结了-->
+                    <SignedCertificateTimestampExtension></SignedCertificateTimestampExtension>
+                    <!--                    还有一部分没有extension是XSD里面有，但是TLS1.2的client_hello不包括-->
+                </extensions>
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+                <!--3.Client Version  type="modifiableByteArray" minOccurs="0" -->
+                <protocolVersion/>
+                <!--4.Client Random     type="modifiableByteArray" minOccurs="0" -->
+                <random/>
+                <!-- <sessionIdLength></sessionIdLength> -->
+                <!--5.Session ID     type="modifiableInteger" minOccurs="0"-->
+                <sessionId/>
+                <!-- <cipherSuiteLength></cipherSuiteLength> -->
+                <!--6.Cipher Suites     type="modifiableByteArray" minOccurs="0"-->
+                <cipherSuites/>
+                <!-- <compressionLength></compressionLength> -->
+                <!--7.Compression Methods  type="modifiableByteArray" minOccurs="0" -->
+                <compressions></compressions>
+                <!--                <cookie></cookie>-->
+                <!--                <cookieLength></cookieLength>-->
+                <!--最后的 8.Extensions Length 顺序在这 minOccurs="0" -->
+
+                <!--                <extensionBytes></extensionBytes>-->
+                <!--                <extensionsLength></extensionsLength>-->
+                <!--                <messageSequence></messageSequence>-->
+
+
+                <!--                <unixTime></unixTime>-->
+            </ClientHello>
+        </messages>
+    </Send>
+</workflowTrace>

@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflowTrace>
+    <Send>
+        <messages>
+            <ClientHello>
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--最后的 8.Extensions Length 顺序在这 minOccurs="0" -->
+                <extensions>
+                    <!--9.Extension - Server Name-->
+                    <EncryptedServerNameIndicationExtension></EncryptedServerNameIndicationExtension>
+                    <ServerNameIndicationExtension></ServerNameIndicationExtension>
+
+                    <!--10.Extension - Status Request-->
+                    <CertificateStatusRequestExtension></CertificateStatusRequestExtension>
+                    <CertificateStatusRequestV2Extension></CertificateStatusRequestV2Extension>
+                    <!--11.Extension - Supported Groups     -->
+                    <EllipticCurves></EllipticCurves>
+                    <!--12.EC Point Formats-->
+                    <ECPointFormat></ECPointFormat>
+                    <!--13.Extension - Signature Algorithms-->
+                    <SignatureAndHashAlgorithmsExtension></SignatureAndHashAlgorithmsExtension>
+                    <!--14.Extension - Renegotiation Info-->
+                    <RenegotiationInfoExtension></RenegotiationInfoExtension>
+                    <!--15.Extension - SCT 完结了-->
+                    <SignedCertificateTimestampExtension></SignedCertificateTimestampExtension>
+                    <!-- 还有一部分没有extension是XSD里面有，但是TLS1.2的client_hello不包括-->
+                </extensions>
+                <!--                <extensionBytes></extensionBytes>-->
+                <!--                <extensionsLength></extensionsLength>-->
+                <!--                <messageSequence></messageSequence>-->
+
+                <!--3.Client Version  type="modifiableByteArray" minOccurs="0" -->
+                <protocolVersion></protocolVersion>
+                <!--                <unixTime></unixTime>-->
+                <!--4.Client Random     type="modifiableByteArray" minOccurs="0" -->
+                <random></random>
+                <!--                <sessionIdLength></sessionIdLength>-->
+                <!--5.Session ID     type="modifiableInteger" minOccurs="0"-->
+                <sessionId></sessionId>
+
+                <!--                <compressionLength></compressionLength>-->
+                <!--                <cipherSuiteLength></cipherSuiteLength>-->
+                <!--6.Cipher Suites     type="modifiableByteArray" minOccurs="0"-->
+                <cipherSuites></cipherSuites>
+                <!--7.Compression Methods  type="modifiableByteArray" minOccurs="0" -->
+                <compressions></compressions>
+                <!--                <cookie></cookie>-->
+                <!--                <cookieLength></cookieLength>-->
+
+            </ClientHello>
+        </messages>
+    </Send>
+    <Receive>
+        <expectedMessages>
+            <ServerHello>
+                <!--1.Record Header 未找到-->
+                <!--2.Handshake Header 未找到-->
+                <!--<completeResultingMessage></completeResultingMessage>-->
+                <!--<required></required>-->
+                <!--<goingToBeSent></goingToBeSent>-->
+                <!--<adjustContext></adjustContext>-->
+
+                <!--<type></type>-->
+                <!--<length></length>-->
+                <!--<includeInDigest></includeInDigest>-->
+                <!--<retransmission></retransmission>-->
+                <!--8.Extensions Length-->
+                <extensions>
+                    <!--9.Extension - Renegotiation Info type="renegotiationInfoExtensionMessage"-->
+                    <RenegotiationInfoExtension/>
+                </extensions>
+                <!--3.Server Version type="modifiableByteArray"-->
+                <protocolVersion/>
+                <!--                <unixTime/>-->
+                <!--4.Server Random type="modifiableByteArray"-->
+                <random/>
+                <!--                <sessionIdLength/>-->
+                <!--5.Session ID type="modifiableByteArray"-->
+                <sessionId/>
+                <!--6.Cipher Suite type="modifiableByteArray"-->
+                <selectedCipherSuite/>
+                <!--7.Compression Method type="modifiableByte"-->
+                <selectedCompressionMethod/>
+                <!--                <autoSetHelloRetryModeInKeyShare/>-->
+            </ServerHello>
+            <Certificate>
+
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extensions></extensions>-->
+
+                <!--                <requestContextLength></requestContextLength>-->
+                <!--                <requestContext></requestContext>-->
+
+                <!--3.Certificates Length  type="modifiableInteger" minOccurs="0"-->
+                <certificatesListLength></certificatesListLength>
+                <!--                <certificatesListBytes></certificatesListBytes>-->
+                <!--                <certificatesList></certificatesList>-->
+                <!--                <certificateListConfig></certificateListConfig>-->
+                <!--                <certificatesListConfig></certificatesListConfig>-->
+                <!--                <certificatesListAsEntry></certificatesListAsEntry>-->
+
+                <!--4.Certificate Length   没找到       -->
+                <!--5.Certificate    没找到       -->
+
+            </Certificate>
+            <!--   第一种密钥   -->
+            <PWDServerKeyExchange>
+
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extension> -->
+
+                <!--                <signatureAndHashAlgorithm></signatureAndHashAlgorithm> -->
+                <!--                <signatureLength></signatureLength> -->
+
+
+                <!--5.Signature type="modifiableByteArray" minOccurs="0"  -->
+                <signature></signature>
+                <!--                <publicKeyLength></publicKeyLength> -->
+
+                <!--4.Public Key type="modifiableByteArray" minOccurs="0"  -->
+                <publicKey></publicKey>
+
+
+                <!--                <saltLength></saltLength> -->
+                <!--                <salt></salt> -->
+
+
+                <!--3.CurveInfo type="modifiableByte" minOccurs="0"  -->
+                <curveType></curveType>
+
+
+                <!--                 <namedGroup></namedGroup> -->
+                <!--                <elementLength></elementLength> -->
+                <!--                <element></element> -->
+                <!--                <scalarLength></scalarLength> -->
+                <!--                <scalar></scalar> -->
+                <!--                <computations></computations> -->
+
+
+            </PWDServerKeyExchange>
+
+            <!--   第二种密钥   -->
+            <PskDheServerKeyExchange>
+
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+                <!--3.CurveInfo  没有 -->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extension> -->
+
+                <signatureAndHashAlgorithm></signatureAndHashAlgorithm>
+                <signatureLength></signatureLength>
+                <!--5.Signature type="modifiableByteArray" minOccurs="0"  -->
+                <signature></signature>
+                <publicKeyLength></publicKeyLength>
+                <!--4.Public Key type="modifiableByteArray" minOccurs="0"  -->
+                <publicKey></publicKey>
+
+                <modulus></modulus>
+                <modulusLength></modulusLength>
+                <generator></generator>
+                <generatorLength></generatorLength>
+                <computations></computations>
+
+
+                <identityHint></identityHint>
+                <identityHintLength></identityHintLength>
+
+
+            </PskDheServerKeyExchange>
+
+            <!--   第三种密钥   -->
+
+            <PskEcDheServerKeyExchange>
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extension> -->
+
+
+                <signatureAndHashAlgorithm></signatureAndHashAlgorithm>
+                <signatureLength></signatureLength>
+                <!--5.Signature type="modifiableByteArray" minOccurs="0"  -->
+                <signature></signature>
+                <publicKeyLength></publicKeyLength>
+                <!--4.Public Key type="modifiableByteArray" minOccurs="0"  -->
+                <publicKey></publicKey>
+
+                <!--3.CurveInfo type="modifiableByte" minOccurs="0"  -->
+                <curveType></curveType>
+                <namedGroup></namedGroup>
+                <computations></computations>
+
+
+                <identityHint></identityHint>
+                <identityHintLength></identityHintLength>
+
+
+            </PskEcDheServerKeyExchange>
+
+            <!--   第四种密钥   -->
+            <PskServerKeyExchange>
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+                <!--3.CurveInfo  没有 -->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extension> -->
+
+
+                <signatureAndHashAlgorithm></signatureAndHashAlgorithm>
+                <signatureLength></signatureLength>
+                <!--5.Signature type="modifiableByteArray" minOccurs="0"  -->
+                <signature></signature>
+                <publicKeyLength></publicKeyLength>
+                <!--4.Public Key type="modifiableByteArray" minOccurs="0"  -->
+                <publicKey></publicKey>
+
+
+                <computations></computations>
+                <identityHint></identityHint>
+                <identityHintLength></identityHintLength>
+
+
+            </PskServerKeyExchange>
+
+
+            <!--   第五种密钥   -->
+            <RSAServerKeyExchange>
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+                <!--3.CurveInfo  没有 -->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extension> -->
+
+
+                <signatureAndHashAlgorithm></signatureAndHashAlgorithm>
+                <signatureLength></signatureLength>
+                <!--5.Signature type="modifiableByteArray" minOccurs="0"  -->
+                <signature></signature>
+                <publicKeyLength></publicKeyLength>
+                <!--4.Public Key type="modifiableByteArray" minOccurs="0"  -->
+                <publicKey></publicKey>
+
+                <modulus></modulus>
+                <modulusLength></modulusLength>
+                <computations></computations>
+
+
+            </RSAServerKeyExchange>
+
+
+            <!--   第六种密钥   -->
+            <SrpServerKeyExchange>
+
+                <!--1.Record Header 没有-->
+                <!--2.Handshake Header 没有-->
+                <!--3.CurveInfo  没有 -->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extension> -->
+
+
+                <signatureAndHashAlgorithm></signatureAndHashAlgorithm>
+                <signatureLength></signatureLength>
+                <!--5.Signature type="modifiableByteArray" minOccurs="0"  -->
+                <signature></signature>
+                <publicKeyLength></publicKeyLength>
+                <!--4.Public Key type="modifiableByteArray" minOccurs="0"  -->
+                <publicKey></publicKey>
+
+
+                <modulus></modulus>
+                <modulusLength></modulusLength>
+                <generator></generator>
+                <generatorLength></generatorLength>
+                <salt></salt>
+                <saltLength></saltLength>
+                <computations></computations>
+
+            </SrpServerKeyExchange>
+            <ServerHelloDone/>
+        </expectedMessages>
+    </Receive>
+    <Send>
+        <messages>
+            <!--1.Record Header 没有-->
+            <!--2.Handshake Header 没有-->
+            <!--3.public key 应该就是下面的-->
+
+            <!--  第一种密钥交换-->
+            <DHClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <publicKeyLength></publicKeyLength>
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKey></publicKey>
+                <!--<xs:element name="computations" type="dhClientComputations" minOccurs="0"/>-->
+                <computations/>
+            </DHClientKeyExchange>
+            <!--  第二种密钥交换-->
+            <DHEClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="signatureAndHashAlgorithm" type="modifiableByteArray" minOccurs="0"/>-->
+                <signatureAndHashAlgorithm/>
+                <!--    注释添加:  name="signatureLength" type="modifiableInteger" minOccurs="0"/>-->
+                <signatureLength/>
+                <!--    注释添加:  name="signature" type="modifiableByteArray" minOccurs="0"/>-->
+                <signature/>
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKey/>
+
+                <!--    注释添加:  name="modulus" type="modifiableByteArray" minOccurs="0"/>-->
+                <modulus></modulus>
+                <!--    注释添加:  name="modulusLength" type="modifiableInteger" minOccurs="0"/>-->
+                <modulusLength/>
+                <!--    注释添加:  name="generator" type="modifiableByteArray" minOccurs="0"/>-->
+                <generator/>
+                <!--    注释添加:  name="generatorLength" type="modifiableInteger" minOccurs="0"/>-->
+                <generatorLength/>
+                <!--    注释添加:  name="computations" type="dheServerComputations" minOccurs="0"/>-->
+                <computations/>
+
+            </DHEClientKeyExchange>
+            <!--第三种密钥交换TLS1.2不支持-->
+            <!--            <ECDHClientKeyExchange>-->
+
+            <!--                &lt;!&ndash;  tls message&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <completeResultingMessage></completeResultingMessage>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <required></required>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <goingToBeSent></goingToBeSent>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <adjustContext></adjustContext>&ndash;&gt;-->
+
+            <!--                &lt;!&ndash;handshakeMessage&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <type></type>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <length></length>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <includeInDigest></includeInDigest>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <retransmission></retransmission>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <retransmission></retransmission>&ndash;&gt;-->
+
+
+            <!--                &lt;!&ndash;    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>&ndash;&gt;-->
+            <!--                <publicKey/>-->
+            <!--                &lt;!&ndash;    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>&ndash;&gt;-->
+            <!--                <publicKeyLength/>-->
+            <!--                &lt;!&ndash;    注释添加:  name="computations" type="dhClientComputations" minOccurs="0"/>&ndash;&gt;-->
+            <!--                <computations/>-->
+            <!--            </ECDHClientKeyExchange>-->
+            <!--第四种密钥交换-->
+            <ECDHEClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+
+                <!--      <xs:element name="signatureAndHashAlgorithm" type="modifiableByteArray" minOccurs="0"/>&ndash;&gt;-->
+                <signatureAndHashAlgorithm/>
+                <!--    注释添加:  name="signatureLength" type="modifiableInteger" minOccurs="0"/>-->
+                <signatureLength/>
+                <!--    注释添加:  name="signature" type="modifiableByteArray" minOccurs="0"/>-->
+                <signature/>
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKey/>
+
+                <!--注释添加:  name="curveType" type="modifiableByte" minOccurs="0"/>
+                          <xs:element name="namedGroup" type="modifiableByteArray" minOccurs="0"/>
+                          <xs:element name="computations" type="ecdheServerComputations" minOccurs="0"/>-->
+                <curveType/>
+                <namedGroup/>
+                <computations/>
+            </ECDHEClientKeyExchange>
+            <!--第五种密钥交换-->
+            <PskClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="pskPremasterComputations" minOccurs="0"/>-->
+                <!--    注释添加:  name="identity" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="identityLength" type="modifiableInteger" minOccurs="0"/>-->
+
+                <computations/>
+                <identity/>
+                <identityLength/>
+            </PskClientKeyExchange>
+            <!--第六种密钥交换-->
+            <RSAClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="pskPremasterComputations" minOccurs="0"/>-->
+                <computations/>
+            </RSAClientKeyExchange>
+            <!--第七种密钥交换-->
+            <GOSTClientKeyExchange>
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="gostClientComputations" minOccurs="0"/>-->
+                <!--    注释添加:  name="keyTransportBlob" type="modifiableByteArray" minOccurs="0"/>-->
+                <computations/>
+                <keyTransportBlob/>
+            </GOSTClientKeyExchange>
+            <!--第八种密钥交换-->
+            <PskDhClientKeyExchange>
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="gostClientComputations" minOccurs="0"/>-->
+                <computations/>
+
+                <!--    注释添加:  name="identity" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="identityLength" type="modifiableInteger" minOccurs="0"/>-->
+                <identity/>
+                <identityLength/>
+            </PskDhClientKeyExchange>
+            <!--第九种密钥交换-->
+            <PskEcDhClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="gostClientComputations" minOccurs="0"/>-->
+                <computations/>
+
+                <!--    注释添加:  name="identity" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="identityLength" type="modifiableInteger" minOccurs="0"/>-->
+                <identity/>
+                <identityLength/>
+            </PskEcDhClientKeyExchange>
+            <!--第十种密钥交换-->
+            <PskRsaClientKeyExchange>
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="gostClientComputations" minOccurs="0"/>-->
+                <computations/>
+
+                <!--    注释添加:  name="identity" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="identityLength" type="modifiableInteger" minOccurs="0"/>-->
+                <identity/>
+                <identityLength/>
+            </PskRsaClientKeyExchange>
+            <!--第十一种密钥交换-->
+            <SrpClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="modulus" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="modulusLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="generator" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="generatorLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="computations" type="srpClientComputations" minOccurs="0"/>-->
+                <!--    注释添加:  name="salt" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="saltLength" type="modifiableInteger" minOccurs="0"/>-->
+
+                <modulus/>
+                <modulusLength/>
+                <generator/>
+                <generatorLength/>
+                <computations/>
+                <salt/>
+                <saltLength/>
+            </SrpClientKeyExchange>
+            <!--第十二种密钥交换-->
+            <PWDClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+
+                <!--    注释添加:  name="elementLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="element" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="scalarLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="scalar" type="modifiableByteArray" minOccurs="0"/>-->
+                <!--    注释添加:  name="computations" type="pwdComputations" minOccurs="0"/>-->
+
+                <elementLength/>
+                <element/>
+                <scalarLength/>
+                <scalar/>
+                <computations/>
+            </PWDClientKeyExchange>
+            <!--第十三种密钥交换-->
+            <EmptyClientKeyExchange>
+
+                <!--  tls message-->
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+                <!--handshakeMessage-->
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <retransmission></retransmission>-->
+
+                <!--    注释添加:  name="publicKeyLength" type="modifiableInteger" minOccurs="0"/>-->
+                <!--    注释添加:  name="publicKey" type="modifiableByteArray" minOccurs="0"/>-->
+                <publicKeyLength/>
+                <publicKey/>
+
+                <!--    注释添加:  name="computations" type="gostClientComputations" minOccurs="0"/>-->
+                <computations/>
+
+            </EmptyClientKeyExchange>
+            <ChangeCipherSpec/>
+            <Finished>
+                <!--1.Record Header 没有-->
+                <!--2.Encryption IV 没有-->
+                <!--3.Encrypted Data 没有-->
+                <!--4.Decryption 没有-->
+                <!--5.Handshake Header 没有-->
+
+                <!--                <completeResultingMessage></completeResultingMessage>-->
+                <!--                <required></required>-->
+                <!--                <goingToBeSent></goingToBeSent>-->
+                <!--                <adjustContext></adjustContext>-->
+
+
+                <!--                <type></type>-->
+                <!--                <length></length>-->
+                <!--                <includeInDigest></includeInDigest>-->
+                <!--                <retransmission></retransmission>-->
+                <!--                <extensions></extensions> -->
+
+
+                <!--6.Verify Data type="modifiableByteArray" minOccurs="0" -->
+                <verifyData></verifyData>
+
+
+            </Finished>
+        </messages>
+    </Send>
+    <Receive>
+        <expectedMessages>
+            <ChangeCipherSpec/>
+            <Finished>
+                <!--1.Record Header 未找到-->
+                <!--2.Encryption IV 未找到-->
+                <!--3.Encrypted Data 未找到-->
+                <!--4.Decryption 未找到-->
+                <!--5.Handshake Header 未找到-->
+                <!--<completeResultingMessage></completeResultingMessage>-->
+                <!--<required></required>-->
+                <!--<goingToBeSent></goingToBeSent>-->
+                <!--<adjustContext></adjustContext>-->
+
+                <!--<type></type>-->
+                <!--<length></length>-->
+                <!--<includeInDigest></includeInDigest>-->
+                <!--<retransmission></retransmission>-->
+                <!--<extensions></extensions>-->
+                <!--6.Verify Data type="modifiableByteArray"-->
+                <verifyData/>
+            </Finished>
+        </expectedMessages>
+    </Receive>
+</workflowTrace>

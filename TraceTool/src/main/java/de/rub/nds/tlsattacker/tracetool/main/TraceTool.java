@@ -53,6 +53,7 @@ public class TraceTool {
         JCommander commander = new JCommander(cmdConfig);
 
         try {
+//            commander.usage();
             commander.parse(args);
         } catch (ParameterException pe) {
             LOGGER.error("Could not parse provided parameters. " + pe.getLocalizedMessage());

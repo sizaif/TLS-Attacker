@@ -1,4 +1,6 @@
 OpenSSL_Client/resources/keys/*.pem
+OpenSSL_Client/resources/aftworkflows/*.xml
+TLS-Client/resources/keys/*.pem
 resources/*.pem
 test.sh
 
@@ -27,3 +29,7 @@ release.properties
 
 # VS Code
 .factorypath
+
+
+# Test script
+Test_script

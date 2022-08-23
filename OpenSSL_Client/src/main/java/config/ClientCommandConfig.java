@@ -1,12 +1,11 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- * <p>
+ *
  * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- * <p>
+ *
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
-
 package config;
 
 import com.beust.jcommander.Parameter;
@@ -62,6 +61,11 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     @Parameter(names = "-workflow_output",
             description = "A path in which the executed workflow trace should be stored in")
     private String workflowOutput = null;
+
+    @Parameter(names = "-workflow_in_files", description = "A path to workflow trace files")
+    private String workflowsInFiles = null;
+    @Parameter(names = "-workflow_out_files", description = "A path to execute workflow trace file to save ")
+    private String workflowsOutFiles = null;
 
     public ClientCommandConfig(GeneralDelegate delegate) {
         super(delegate);
@@ -124,4 +128,19 @@ public class ClientCommandConfig extends TLSDelegateConfig {
         return workflowOutput;
     }
 
+    public String getWorkflowsInFiles() {
+        return workflowsInFiles;
+    }
+
+    public void setWorkflowsInFiles(String workflowsInFiles) {
+        this.workflowsInFiles = workflowsInFiles;
+    }
+
+    public String getWorkflowsOutFiles() {
+        return workflowsOutFiles;
+    }
+
+    public void setWorkflowsOutFiles(String workflowsOutFiles) {
+        this.workflowsOutFiles = workflowsOutFiles;
+    }
 }

@@ -38,6 +38,7 @@ public class TlsClient {
         JCommander commander = new JCommander(config);
         try {
             commander.parse(args);
+            commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
                 return;
