@@ -4,8 +4,7 @@
         <actionOptions/>
         <messages>
             <ClientHello>
-
-            <extensions>
+                <extensions>
                     <ECPointFormat/>
                     <EllipticCurves/>
                     <SignatureAndHashAlgorithmsExtension/>

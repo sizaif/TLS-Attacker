@@ -16,7 +16,7 @@
         <messages>
             <ClientHello>
 
-            <completeResultingMessage>
+                <completeResultingMessage>
                     <originalValue>01 00 03 40 03 03 A6 13 53 39 60 B4 20 BB 38 51 D9 D4 7A CB 93 3D BE 70 39 9B F6 C9
                         2D A3 3A F0 1D 4F B7 70 E9 8C 00 02 8E 00 0A 00 2F 00 01 00 02 00 3C 00 3D 00 35 00 41 00 84 00
                         07 00 09 00 96 00 04 00 05 C0 9C C0 9D 00 9C 00 9D 00 0D 00 10 00 13 00 16 00 17 00 19 00 18 00

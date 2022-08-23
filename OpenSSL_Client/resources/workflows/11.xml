@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<workflowTrace>
+    <Send>
+        <actionOptions/>
+        <messages>
+            <ClientHello>
+                <extensions>
+                    <ECPointFormat/>
+                    <EllipticCurves/>
+                    <SignatureAndHashAlgorithmsExtension/>
+                    <RenegotiationInfoExtension/>
+                </extensions>
+                <protocolVersion>
+                    <ByteArrayExplicitValueModification>
+                        <explicitValue>03 02</explicitValue>
+                    </ByteArrayExplicitValueModification>
+                </protocolVersion>
+                <random/>
+                <sessionId/>
+                <cipherSuites>
+                    <ByteArrayExplicitValueModification>
+                        <explicitValue>
+                            C0 2C C0 30 CC A9 CC A8 C0 AD C0 2B
+                            C0 2F C0 AC C0 AC C0 23 C0 27 C0 0A
+                            C0 14 C0 09 C0 13
+                        </explicitValue>
+                    </ByteArrayExplicitValueModification>
+                </cipherSuites>
+                <compressions/>
+            </ClientHello>
+        </messages>
+    </Send>
+    <GenericReceive/>
+    <Send>
+        <actionOptions/>
+        <messages>
+
+            <ECDHClientKeyExchange/>
+            <!--            <RSAClientKeyExchange/>-->
+            <ChangeCipherSpec/>
+            <Finished/>
+        </messages>
+    </Send>
+    <GenericReceive/>
+    <Send>
+        <actionOptions/>
+        <messages>
+            <Application/>
+        </messages>
+    </Send>
+</workflowTrace>
