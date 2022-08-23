@@ -2,7 +2,7 @@
     <OutboundConnection>
         <alias>client</alias>
         <ip>127.0.0.1</ip>
-        <port>4434</port>
+        <port>4433</port>
         <hostname>localhost</hostname>
         <timeout>1000</timeout>
         <firstTimeout>1000</firstTimeout>
