@@ -2,7 +2,7 @@
 
 ## 函数调用图
 
-![fun-](.\resources\img\img_fun.png)
+![fun-](./resources/img/img_fun.png)
 
 ## 说明
 
