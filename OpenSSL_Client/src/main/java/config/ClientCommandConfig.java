@@ -51,10 +51,10 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     @ParametersDelegate
     private StarttlsDelegate starttlsDelegate;
 
-    @Parameter(names = "socket_host", description = "flag socket to fuzz's host ")
+    @Parameter(names = "-socket_host", description = "flag socket to fuzz's host ")
     private String socket_host = "localhost";
 
-    @Parameter(names = "socket_port", description = "flag with socket to fuzz's port ")
+    @Parameter(names = "-socket_port", description = "flag with socket to fuzz's port ")
     private Integer socket_port = 9998;
 
     @Parameter(names = "-workflow_input", description = "A path to a workflow trace that should be exeucted")

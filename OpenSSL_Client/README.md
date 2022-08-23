@@ -115,10 +115,10 @@ Usage: <main class> [options]
     -workflow_trace_type
       Type of the workflow trace
       Possible Values: [FULL, HANDSHAKE, DYNAMIC_HANDSHAKE, DYNAMIC_HELLO, HELLO, SHORT_HELLO, RESUMPTION, FULL_RESUMPTION, CLIENT_RENEGOTIATION_WITHOUT_RESUMPTION, CLIENT_RENEGOTIATION, SERVER_RENEGOTIATION, DYNAMIC_CLIENT_RENEGOTIATION_WITHOUT_RESUMPTION, HTTPS, DYNAMIC_HTTPS, SSL2_HELLO, SIMPLE_MITM_PROXY, TLS13_PSK, FULL_TLS13_PSK, ZERO_RTT, FULL_ZERO_RTT, FALSE_START, RSA_SYNC_PROXY]
-    socket_host
+    -socket_host
       flag socket to fuzz's host
       Default: localhost
-    socket_port
+    -socket_port
       flag with socket to fuzz's port
       Default: 9998
 ```
