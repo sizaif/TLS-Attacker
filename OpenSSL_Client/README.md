@@ -21,7 +21,7 @@
 #会在此目录下生成apps/OpenSSL_Client.jar
 mvn install  
 
-java -jar <path/to/OpenSSL_Client.jar> -connect localhost:4433 \
+java -jar <path/to/OpenSSL_Client.jar> -connect <host:port> \
           -key <path/to/key.pem> \
           -cert <path/to/cert.pem> \
           -workflow_in_files <path/to/seedfiles> \
