@@ -34,10 +34,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -140,60 +137,9 @@ public class Client {
     public static void startWithUdp(ClientCommandConfig config) {
         try {
             while (!stop_soon) {
-                stop_soon = true;
                 config.getGeneralDelegate().setDebug(false);
                 Config tlsConfig = config.createConfig();
                 Client TlsClient = new Client();
-
-                /**
-                 * 2022-08-15 21:35:22 1. 在启动客户端之前，向fuzz传输信号，通知准备进行握手 2. 2022-08-15 目前暂时想到的 传输信号方式使用 socket
-                 * 本侧作为客户端socket_client，fuzz侧作为服务端socket_server 3. socket_client 写入当前时间unix 4. socket_server 读取内容后，做hash
-                 * 运算与pre_hash 进行比较如果不同， 则认为启动了新客户端client与openssl s_server进行握手 此时fuzz 端将trace_ssL_bits清空， 并统计边覆盖率
-                 *
-                 */
-                // 创建socket udp 客户端
-                DatagramSocket socket_client = new DatagramSocket(9997);
-                try {
-
-                    // 发送
-                    long curTime = System.currentTimeMillis();
-                    byte[] socket_data = long2byte(curTime);
-                    System.out.println("socket_data: " + socket_data);
-                    DatagramPacket socket_packet = new DatagramPacket(socket_data, socket_data.length,
-                            InetAddress.getByName(config.getSocket_host()), config.getSocket_port());
-                    // 发送数据包
-                    socket_client.send(socket_packet);
-                    System.out.println("send data success");
-
-                    // 接受
-                    byte[] receive_buff = new byte[100];
-                    boolean rec_ok = false;
-                    while (!rec_ok) {
-                        // 存放数据包的容器
-                        DatagramPacket rec_packet = new DatagramPacket(receive_buff, 0, receive_buff.length);
-                        socket_client.receive(rec_packet);
-                        byte[] rec_packetData = rec_packet.getData();
-                        String rec_data_str = new String(rec_packetData, StandardCharsets.UTF_8);
-
-                        System.out.println("rec_data: " + rec_data_str);
-                        System.out.println("rec_data len : " + rec_data_str.length());
-                        if (rec_data_str.startsWith("OK")) {
-
-                            System.out.println("receive ok!!!!!!!!!!");
-                            rec_ok = true;
-                        }
-                    }
-                } catch (IOException ioex) {
-                    System.out.println(ioex);
-                } finally {
-                    if (socket_client != null) {
-                        try {
-                            socket_client.close();
-                        } catch (Exception ioe) {
-
-                        }
-                    }
-                }
                 startWorkflow(config, TlsClient);
             }
         } catch (Exception e) {
@@ -208,8 +154,6 @@ public class Client {
 
                 config.getGeneralDelegate().setDebug(false);
                 Client TlsClient = new Client();
-
-
                 startWorkflow(config, TlsClient);
             }
 
@@ -254,7 +198,9 @@ public class Client {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 //                                LOGGER.debug(" visit file is : "+ file);
-
+                    if (config.getWorkmode() == "udp") {
+                        startudp(config.getSocket_host(), config.getSocket_port());
+                    }
                     try {
                         LOGGER.info("---------------------------------------------------------------------------------------------");
                         WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(file.toFile()));
@@ -319,6 +265,58 @@ public class Client {
 
         }
 
+    }
+
+    public static void startudp(String host, int port) throws SocketException {
+        /**
+         * 2022-08-15 21:35:22 1. 在启动客户端之前，向fuzz传输信号，通知准备进行握手 2. 2022-08-15 目前暂时想到的 传输信号方式使用 socket
+         * 本侧作为客户端socket_client，fuzz侧作为服务端socket_server 3. socket_client 写入当前时间unix 4. socket_server 读取内容后，做hash
+         * 运算与pre_hash 进行比较如果不同， 则认为启动了新客户端client与openssl s_server进行握手 此时fuzz 端将trace_ssL_bits清空， 并统计边覆盖率
+         *
+         */
+        // 创建socket udp 客户端
+        DatagramSocket socket_client = new DatagramSocket(9997);
+        try {
+
+            // 发送
+            long curTime = System.currentTimeMillis();
+            byte[] socket_data = long2byte(curTime);
+            System.out.println("socket_data: " + socket_data);
+            DatagramPacket socket_packet = new DatagramPacket(socket_data, socket_data.length,
+                    InetAddress.getByName(host), port);
+            // 发送数据包
+            socket_client.send(socket_packet);
+            System.out.println("send data success");
+
+            // 接受
+            byte[] receive_buff = new byte[100];
+            boolean rec_ok = false;
+            while (!rec_ok) {
+                // 存放数据包的容器
+                DatagramPacket rec_packet = new DatagramPacket(receive_buff, 0, receive_buff.length);
+                socket_client.receive(rec_packet);
+                byte[] rec_packetData = rec_packet.getData();
+                String rec_data_str = new String(rec_packetData, StandardCharsets.UTF_8);
+
+                System.out.println("rec_data: " + rec_data_str);
+                System.out.println("rec_data len : " + rec_data_str.length());
+                if (rec_data_str.startsWith("OK")) {
+
+                    System.out.println("receive ok!!!!!!!!!!");
+                    rec_ok = true;
+                }
+            }
+        } catch (IOException ioex) {
+            System.out.println(ioex);
+        } finally {
+            if (socket_client != null) {
+                try {
+                    socket_client.close();
+                } catch (Exception ioe) {
+
+                }
+            }
+        }
     }
 
     public State startTlsClient(Config config, WorkflowTrace trace) {
