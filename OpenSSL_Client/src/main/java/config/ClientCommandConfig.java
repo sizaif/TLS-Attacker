@@ -68,6 +68,9 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     @Parameter(names = "-workflow_out_files", description = "A path to execute workflow trace file to save ")
     private String workflowsOutFiles = null;
 
+    @Parameter(names = "-work_mode", description = "client work mode (udp or no_udp ), default:no_udp ")
+    private String workmode = "no_udp";
+
     public ClientCommandConfig(GeneralDelegate delegate) {
         super(delegate);
         delegate.setDebug(false);
@@ -144,4 +147,13 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     public void setWorkflowsOutFiles(String workflowsOutFiles) {
         this.workflowsOutFiles = workflowsOutFiles;
     }
+
+    public String getWorkmode() {
+        return workmode;
+    }
+
+    public void setWorkmode(String workmode) {
+        this.workmode = workmode;
+    }
 }
+

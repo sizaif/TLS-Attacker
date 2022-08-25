@@ -123,8 +123,13 @@ public class Client {
                 list.plotListing();
                 return;
             }
+            if (config.getWorkmode() == "no_udp") {
+                startWithNoUdp(config);
+            } else if (config.getWorkmode() == "udp") {
 
-            startWithNoUdp(config);
+                startWithUdp(config);
+            }
+
         } catch (ParameterException e) {
             LOGGER.error("Could not parse provided parameters. " + e.getLocalizedMessage(), e);
             commander.usage();
