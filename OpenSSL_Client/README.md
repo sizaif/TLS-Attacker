@@ -2,14 +2,14 @@
 
 ## 函数调用图
 
-![fun-](./resources/img/img_fun.png)
+![fun-](./resources/img/img_fun_20220825.png)
 
 ## 说明
 
 1. 通过`resources/keys/genkey.sh`生成key, 仅支持unix系统
 2. 通过`getOsName`判断是否为`unix`系统
 3. 支持使用`udp`通信模块与fuzz进行通信模式发送消息与不通信直接发送消息两种模式
-4. 默认使用`非udp`模式进行发送
+4. 通过`-work_mode` 参数指定work使用mode，默认`no_udp`模式进行发送
 5. 通过`-workflow_in_files <path/file>` 参数指定输入的种子文件夹
 6. 通过`-workflow_out_files <path/file>` 参数指定记录`workflow trace`执行记录
 7. 默认不开启`deubg`模式，默认只显示`info/error`级别消息,通过添加`-debug`参数开启`debug`消息
@@ -92,6 +92,12 @@ Usage: <main class> [options]
     -signature_hash_algo
       Supported Signature and Hash Algorithms separated by comma eg. 
       RSA-SHA512,DSA-SHA512 
+    -socket_host
+      flag socket to fuzz's host
+      Default: localhost
+    -socket_port
+      flag with socket to fuzz's port
+      Default: 9998
     -starttls
       Starttls protocol
       Default: NONE
@@ -104,6 +110,9 @@ Usage: <main class> [options]
     -version
       Highest supported protocol version
       Possible Values: [SSL2, SSL3, TLS10, TLS11, TLS12, TLS13, TLS13_DRAFT14, TLS13_DRAFT15, TLS13_DRAFT16, TLS13_DRAFT17, TLS13_DRAFT18, TLS13_DRAFT19, TLS13_DRAFT20, TLS13_DRAFT21, TLS13_DRAFT22, TLS13_DRAFT23, TLS13_DRAFT24, TLS13_DRAFT25, TLS13_DRAFT26, TLS13_DRAFT27, TLS13_DRAFT28, DTLS10_DRAFT, DTLS10, DTLS12, GREASE_00, GREASE_01, GREASE_02, GREASE_03, GREASE_04, GREASE_05, GREASE_06, GREASE_07, GREASE_08, GREASE_09, GREASE_10, GREASE_11, GREASE_12, GREASE_13, GREASE_14, GREASE_15]
+    -work_mode
+      client work mode (udp or no_udp ), default:no_udp
+      Default: no_udp
     -workflow_in_files
       A path to workflow trace files
     -workflow_input
@@ -115,10 +124,5 @@ Usage: <main class> [options]
     -workflow_trace_type
       Type of the workflow trace
       Possible Values: [FULL, HANDSHAKE, DYNAMIC_HANDSHAKE, DYNAMIC_HELLO, HELLO, SHORT_HELLO, RESUMPTION, FULL_RESUMPTION, CLIENT_RENEGOTIATION_WITHOUT_RESUMPTION, CLIENT_RENEGOTIATION, SERVER_RENEGOTIATION, DYNAMIC_CLIENT_RENEGOTIATION_WITHOUT_RESUMPTION, HTTPS, DYNAMIC_HTTPS, SSL2_HELLO, SIMPLE_MITM_PROXY, TLS13_PSK, FULL_TLS13_PSK, ZERO_RTT, FULL_ZERO_RTT, FALSE_START, RSA_SYNC_PROXY]
-    -socket_host
-      flag socket to fuzz's host
-      Default: localhost
-    -socket_port
-      flag with socket to fuzz's port
-      Default: 9998
+
 ```
