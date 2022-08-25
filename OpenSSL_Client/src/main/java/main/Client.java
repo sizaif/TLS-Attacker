@@ -121,9 +121,9 @@ public class Client {
                 list.plotListing();
                 return;
             }
-            if (Objects.equals(config.getWorkmode(), "no_udp")) {
+            if (Objects.equals(config.getWorkMode(), "no_udp")) {
                 startWithNoUdp(config);
-            } else if (Objects.equals(config.getWorkmode(), "udp")) {
+            } else if (Objects.equals(config.getWorkMode(), "udp")) {
                 startWithUdp(config);
             }
 
@@ -199,9 +199,11 @@ public class Client {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 //                                LOGGER.debug(" visit file is : "+ file);
-                    if (config.getWorkmode() == "udp") {
+
+                    if (Objects.equals(config.getWorkMode(), "udp")) {
                         startudp(config.getSocket_host(), config.getSocket_port());
                     }
+
                     try {
                         LOGGER.info("---------------------------------------------------------------------------------------------");
                         WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(file.toFile()));

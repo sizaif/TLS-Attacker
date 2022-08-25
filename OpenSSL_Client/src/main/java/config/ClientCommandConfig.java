@@ -69,7 +69,7 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     private String workflowsOutFiles = null;
 
     @Parameter(names = "-work_mode", description = "client work mode (udp or no_udp ), default:no_udp ")
-    private String workmode = "no_udp";
+    private String workMode = "no_udp";
 
     public ClientCommandConfig(GeneralDelegate delegate) {
         super(delegate);
@@ -148,12 +148,12 @@ public class ClientCommandConfig extends TLSDelegateConfig {
         this.workflowsOutFiles = workflowsOutFiles;
     }
 
-    public String getWorkmode() {
-        return workmode;
+    public String getWorkMode() {
+        return workMode;
     }
 
-    public void setWorkmode(String workmode) {
-        this.workmode = workmode;
+    public void setWorkMode(String workMode) {
+        this.workMode = workMode;
     }
 }
 
