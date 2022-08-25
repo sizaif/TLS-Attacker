@@ -41,6 +41,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Objects;
 import java.util.Random;
 
 import static sun.misc.SignalHandler.SIG_DFL;
@@ -109,7 +110,7 @@ public class Client {
         JCommander commander = new JCommander(config);
         try {
             commander.parse(args);
-//            commander.usage();
+            commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
                 return;
@@ -120,10 +121,9 @@ public class Client {
                 list.plotListing();
                 return;
             }
-            if (config.getWorkmode() == "no_udp") {
+            if (Objects.equals(config.getWorkmode(), "no_udp")) {
                 startWithNoUdp(config);
-            } else if (config.getWorkmode() == "udp") {
-
+            } else if (Objects.equals(config.getWorkmode(), "udp")) {
                 startWithUdp(config);
             }
 
@@ -137,6 +137,7 @@ public class Client {
     public static void startWithUdp(ClientCommandConfig config) {
         try {
             while (!stop_soon) {
+                stop_soon = true;
                 config.getGeneralDelegate().setDebug(false);
                 Config tlsConfig = config.createConfig();
                 Client TlsClient = new Client();
