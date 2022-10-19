@@ -60,6 +60,10 @@ public class Client {
 
     public static boolean isunix = false;
 
+    public static long startnTime;
+    public static long startmTime;
+    public static long endnTime;
+    public static long endmTime;
 
     public static void main(String[] args) {
 
@@ -103,6 +107,13 @@ public class Client {
                 // 3 不能在这里调用System.exit()
                 // TODO: 输出日志
                 System.out.println("do shutdown hook");
+
+                endnTime = System.nanoTime();
+                endmTime = System.currentTimeMillis();
+
+                System.out.println("run time: " + (endnTime - startnTime) + " ns");
+                System.out.println("run time: " + (endmTime - startmTime) + " ms");
+
             }
         });
 
@@ -110,7 +121,8 @@ public class Client {
         JCommander commander = new JCommander(config);
         try {
             commander.parse(args);
-            commander.usage();
+
+            //commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
                 return;
@@ -333,6 +345,10 @@ public class Client {
                 WorkflowExecutorFactory.createWorkflowExecutor(config.getWorkflowExecutorType(), state);
 
         try {
+            // 计算程序运行时间
+            startnTime = System.nanoTime();
+            startmTime = System.currentTimeMillis();
+
             workflowExecutor.executeWorkflow();
         } catch (WorkflowExecutionException ex) {
             LOGGER.warn(
