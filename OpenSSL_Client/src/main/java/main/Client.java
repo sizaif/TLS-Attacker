@@ -113,7 +113,6 @@ public class Client {
                 endnTime = System.nanoTime();
                 endmTime = System.currentTimeMillis();
                 endDate = new Date();
-                System.out.println("run time: " + (endDate.getTime()) + " ns: " + System.currentTimeMillis());
                 System.out.println("run time: " + (endnTime - startnTime) + " ns: st: " + startnTime + " ed: " + endnTime);
                 System.out.println("run time: " + (endmTime - startmTime) + " ms: st: " + startmTime + " ed: " + endmTime);
                 System.out.println("run time: " + (endDate.getTime() - startDate.getTime()) + " ms");
@@ -359,7 +358,7 @@ public class Client {
             startnTime = System.nanoTime();
             startmTime = System.currentTimeMillis();
             startDate = new Date();
-            
+
             workflowExecutor.executeWorkflow();
         } catch (WorkflowExecutionException ex) {
             LOGGER.warn(
