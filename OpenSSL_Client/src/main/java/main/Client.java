@@ -41,6 +41,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -64,6 +65,7 @@ public class Client {
     public static long startmTime;
     public static long endnTime;
     public static long endmTime;
+    public static Date startDate, endDate;
 
     public static void main(String[] args) {
 
@@ -110,9 +112,10 @@ public class Client {
 
                 endnTime = System.nanoTime();
                 endmTime = System.currentTimeMillis();
-
+                endDate = new Date();
                 System.out.println("run time: " + (endnTime - startnTime) + " ns");
                 System.out.println("run time: " + (endmTime - startmTime) + " ms");
+                System.out.println("run time: " + (endDate.getTime() - startDate.getTime()) + " ms");
 
             }
         });
@@ -348,6 +351,7 @@ public class Client {
             // 计算程序运行时间
             startnTime = System.nanoTime();
             startmTime = System.currentTimeMillis();
+            startDate = new Date();
 
             workflowExecutor.executeWorkflow();
         } catch (WorkflowExecutionException ex) {
