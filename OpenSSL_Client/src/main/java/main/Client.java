@@ -113,8 +113,8 @@ public class Client {
                 endnTime = System.nanoTime();
                 endmTime = System.currentTimeMillis();
                 endDate = new Date();
-                System.out.println("run time: " + (endnTime - startnTime) + " ns: st: " + startnTime + " ed: " + endnTime);
-                System.out.println("run time: " + (endmTime - startmTime) + " ms: st: " + startmTime + " ed: " + endmTime);
+                System.out.println("run time: " + (endnTime - startnTime) + " ns");
+                System.out.println("run time: " + (endmTime - startmTime) + " ms");
                 System.out.println("run time: " + (endDate.getTime() - startDate.getTime()) + " ms");
 
             }
