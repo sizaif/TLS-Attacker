@@ -125,7 +125,7 @@ public class Client {
         try {
             commander.parse(args);
 
-            //commander.usage();
+            // commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
                 return;
@@ -220,7 +220,8 @@ public class Client {
                     }
 
                     try {
-                        LOGGER.info("---------------------------------------------------------------------------------------------");
+                        LOGGER.info(
+                                "---------------------------------------------------------------------------------------------");
                         WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(file.toFile()));
                         State state = TlsClient.startTlsClient(tlsConfig, trace);
 
@@ -300,8 +301,8 @@ public class Client {
             long curTime = System.currentTimeMillis();
             byte[] socket_data = long2byte(curTime);
             System.out.println("socket_data: " + socket_data);
-            DatagramPacket socket_packet = new DatagramPacket(socket_data, socket_data.length,
-                    InetAddress.getByName(host), port);
+            DatagramPacket socket_packet =
+                    new DatagramPacket(socket_data, socket_data.length, InetAddress.getByName(host), port);
             // 发送数据包
             socket_client.send(socket_packet);
             System.out.println("send data success");

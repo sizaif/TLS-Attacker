@@ -156,4 +156,3 @@ public class ClientCommandConfig extends TLSDelegateConfig {
         this.workMode = workMode;
     }
 }
-
