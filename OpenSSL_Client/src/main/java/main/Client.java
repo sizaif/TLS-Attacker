@@ -181,6 +181,11 @@ public class Client {
 
     public static void startWorkflow(ClientCommandConfig config, Client TlsClient) throws IOException {
 
+        // 计算程序运行时间
+        startnTime = System.nanoTime();
+        startmTime = System.currentTimeMillis();
+        startDate = new Date();
+
         Config tlsConfig = config.createConfig();
 
         if (config.getWorkflowsOutFiles() != null) {
@@ -354,7 +359,7 @@ public class Client {
             startnTime = System.nanoTime();
             startmTime = System.currentTimeMillis();
             startDate = new Date();
-
+            
             workflowExecutor.executeWorkflow();
         } catch (WorkflowExecutionException ex) {
             LOGGER.warn(
