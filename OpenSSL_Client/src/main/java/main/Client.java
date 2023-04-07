@@ -1,12 +1,11 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- *
- * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- *
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
-
 package main;
 
 import com.beust.jcommander.JCommander;
@@ -125,7 +124,7 @@ public class Client {
         try {
             commander.parse(args);
 
-            // commander.usage();
+//            commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
                 return;
@@ -167,8 +166,7 @@ public class Client {
         try {
             while (!stop_soon) {
                 stop_soon = true;
-
-                config.getGeneralDelegate().setDebug(false);
+//                config.getGeneralDelegate().setDebug(false);
                 Client TlsClient = new Client();
                 startWorkflow(config, TlsClient);
             }
@@ -186,6 +184,7 @@ public class Client {
         startDate = new Date();
 
         Config tlsConfig = config.createConfig();
+//        WorkflowTrace trace = null;
 
         if (config.getWorkflowsOutFiles() != null) {
             if (!Files.exists(Path.of(config.getWorkflowsOutFiles()))) {
@@ -231,7 +230,6 @@ public class Client {
                         State state = TlsClient.startTlsClient(tlsConfig, trace);
 
                         if (config.getWorkflowsOutFiles() != null) {
-
                             trace = state.getWorkflowTrace();
 
                             String outfilepre = config.getWorkflowsOutFiles();
@@ -261,7 +259,7 @@ public class Client {
                 }
 
                 /**
-                 * 在访问文件失败是调用
+                 * 在访问文件失败时调用
                  *
                  * @param  file
                  * @param  exc
@@ -288,6 +286,8 @@ public class Client {
             });
 
         }
+
+//        State state = TlsClient.startTlsClient(tlsConfig, trace);
 
     }
 
@@ -344,15 +344,20 @@ public class Client {
     }
 
     public State startTlsClient(Config config, WorkflowTrace trace) {
+
+        LOGGER.info("fuck 353");
         State state;
         if (trace == null) {
             state = new State(config);
         } else {
             state = new State(config, trace);
         }
+
+        LOGGER.info("361 try to print msg: " + state.getWorkflowTrace().getFirstMessageAction().getMessages().get(0));
+        LOGGER.info("362 try to print msg: "
+                + state.getWorkflowTrace().getFirstMessageAction().getMessages().get(0).getCompleteResultingMessage());
         WorkflowExecutor workflowExecutor =
                 WorkflowExecutorFactory.createWorkflowExecutor(config.getWorkflowExecutorType(), state);
-
         try {
             // 计算程序运行时间
             startnTime = System.nanoTime();
@@ -360,6 +365,8 @@ public class Client {
             startDate = new Date();
 
             workflowExecutor.executeWorkflow();
+            LOGGER.info("372 try to print msg: "
+                    + state.getWorkflowTrace().getFirstMessageAction().getMessages().get(0).getCompleteResultingMessage());
         } catch (WorkflowExecutionException ex) {
             LOGGER.warn(
                     "The TLS protocol flow was not executed completely, follow the debug messages for more information.");
@@ -430,3 +437,5 @@ public class Client {
         }
     }
 }
+
+//-workflow_in_files ./OpenSSL_Client/resources/workflows/ -workflow_out_files ./OpenSSL_Client/resources/aftworkflows/
