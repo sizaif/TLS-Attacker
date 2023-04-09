@@ -35,10 +35,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.Objects;
@@ -168,6 +165,7 @@ public class Client {
                 stop_soon = true;
 //                config.getGeneralDelegate().setDebug(false);
                 Client TlsClient = new Client();
+                System.out.println("start workflow with no udp");
                 startWorkflow(config, TlsClient);
             }
 
@@ -176,7 +174,7 @@ public class Client {
         }
     }
 
-    public static void startWorkflow(ClientCommandConfig config, Client TlsClient) throws IOException {
+    public static void startWorkflow(ClientCommandConfig config, Client TlsClient) throws IOException, InterruptedException {
 
         // 计算程序运行时间
         startnTime = System.nanoTime();
@@ -193,12 +191,17 @@ public class Client {
         }
         if (config.getWorkflowsInFiles() != null) {
             LOGGER.debug("Reading workflow trace files from " + config.getWorkflowsInFiles());
+
+            /**
+             * 先将目录下所有文件执行，
+             * 然后持续监控新增文件
+             */
             Files.walkFileTree(Path.of(config.getWorkflowsInFiles()), new FileVisitor<Path>() {
                 /**
                  * 在访问任意目录前调用；
                  *
-                 * @param  dir
-                 * @param  attrs
+                 * @param dir
+                 * @param attrs
                  * @throws IOException
                  */
                 @Override
@@ -222,39 +225,8 @@ public class Client {
                     if (Objects.equals(config.getWorkMode(), "udp")) {
                         startudp(config.getSocket_host(), config.getSocket_port());
                     }
-
-                    try {
-                        LOGGER.info(
-                                "---------------------------------------------------------------------------------------------");
-                        WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(file.toFile()));
-                        State state = TlsClient.startTlsClient(tlsConfig, trace);
-
-                        if (config.getWorkflowsOutFiles() != null) {
-                            trace = state.getWorkflowTrace();
-
-                            String outfilepre = config.getWorkflowsOutFiles();
-                            String file_str = file.toString();
-                            String temp_str[];
-
-                            if (isunix) {
-                                temp_str = file_str.split("/");
-                            } else {
-                                temp_str = file_str.split("\\\\");
-                            }
-
-                            String old_file_name = temp_str[temp_str.length - 1];
-                            String new_file_name = "Execute_" + old_file_name;
-                            outfilepre = outfilepre + new_file_name;
-//                            LOGGER.debug(" after file name : "+new_file_name +" ; after path: "+outfilepre);
-                            LOGGER.info("Writing workflow trace to " + outfilepre);
-                            WorkflowTraceSerializer.write(new File(outfilepre), trace);
-
-                        }
-
-                    } catch (Exception e) {
-//                                    e.printStackTrace();
-                    }
-
+                    // 调用执行文件
+                    handleFile(tlsConfig,config,TlsClient,file.toString());
                     return FileVisitResult.CONTINUE;
                 }
 
@@ -274,8 +246,8 @@ public class Client {
                 /**
                  * 在访问任意目录完成后调用；
                  *
-                 * @param  dir
-                 * @param  exc
+                 * @param dir
+                 * @param exc
                  * @return
                  * @throws IOException
                  */
@@ -285,7 +257,42 @@ public class Client {
                 }
             });
 
-        }
+            /**
+             * 持续监控目录下新增文件
+             */
+            // 获取文件夹的路径对象和监控服务对象
+            Path folder = Paths.get(config.getWorkflowsInFiles());
+            WatchService watchService = folder.getFileSystem().newWatchService();
+            // 将文件夹注册到监控服务中
+            folder.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
+
+            // 循环监控文件夹中的新增文件
+            while (true) {
+                // 获取监控事件
+                WatchKey key = watchService.take();
+
+                // 处理监控事件中的所有事件
+                for (WatchEvent<?> event : key.pollEvents()) {
+                    // 获取事件类型和文件名
+                    WatchEvent.Kind<?> kind = event.kind();
+                    String fileName = event.context().toString();
+                    String path2file = config.getWorkflowsInFiles() + "/" + fileName;
+
+//                        System.out.println("file: "+path2file);
+                    // 如果是新增文件事件，则处理该文件
+                    if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
+                        // 处理文件
+                        handleFile(tlsConfig, config, TlsClient, path2file);
+
+                    }
+                }
+
+                // 重置监控事件，并准备下一次循环
+                key.reset();
+            }
+            }
+
+
 
 //        State state = TlsClient.startTlsClient(tlsConfig, trace);
 
@@ -373,6 +380,42 @@ public class Client {
             LOGGER.debug(ex.getLocalizedMessage(), ex);
         }
         return state;
+    }
+
+    public static void handleFile(Config tlsConfig, ClientCommandConfig config, Client TlsClient, String path2file) {
+        // 处理文件
+        System.out.println("处理文件：" + path2file);
+        try {
+            LOGGER.info(
+                    "---------------------------------------------------------------------------------------------");
+            WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
+            State state = TlsClient.startTlsClient(tlsConfig, trace);
+
+            if (config.getWorkflowsOutFiles() != null) {
+                trace = state.getWorkflowTrace();
+
+                String outfilepre = config.getWorkflowsOutFiles();
+                String file_str = path2file;
+                String temp_str[];
+
+                if (isunix) {
+                    temp_str = file_str.split("/");
+                } else {
+                    temp_str = file_str.split("\\\\");
+                }
+
+                String old_file_name = temp_str[temp_str.length - 1];
+                String new_file_name = "Execute_" + old_file_name;
+                outfilepre = outfilepre + new_file_name;
+//                LOGGER.debug(" after file name : "+new_file_name +" ; after path: "+outfilepre);
+                LOGGER.info("Writing workflow trace to " + outfilepre);
+                WorkflowTraceSerializer.write(new File(outfilepre), trace);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static class ThisSignalHandler implements SignalHandler {
