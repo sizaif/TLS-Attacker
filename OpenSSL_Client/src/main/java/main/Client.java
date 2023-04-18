@@ -120,7 +120,6 @@ public class Client {
         JCommander commander = new JCommander(config);
         try {
             commander.parse(args);
-
 //            commander.usage();
             if (config.getGeneralDelegate().isHelp()) {
                 commander.usage();
@@ -180,10 +179,7 @@ public class Client {
         startnTime = System.nanoTime();
         startmTime = System.currentTimeMillis();
         startDate = new Date();
-
         Config tlsConfig = config.createConfig();
-//        WorkflowTrace trace = null;
-
         if (config.getWorkflowsOutFiles() != null) {
             if (!Files.exists(Path.of(config.getWorkflowsOutFiles()))) {
                 Files.createDirectory(Path.of(config.getWorkflowsOutFiles()));
@@ -352,28 +348,16 @@ public class Client {
 
     public State startTlsClient(Config config, WorkflowTrace trace) {
 
-        LOGGER.info("fuck 353");
         State state;
         if (trace == null) {
             state = new State(config);
         } else {
             state = new State(config, trace);
         }
-
-        LOGGER.info("361 try to print msg: " + state.getWorkflowTrace().getFirstMessageAction().getMessages().get(0));
-        LOGGER.info("362 try to print msg: "
-                + state.getWorkflowTrace().getFirstMessageAction().getMessages().get(0).getCompleteResultingMessage());
         WorkflowExecutor workflowExecutor =
                 WorkflowExecutorFactory.createWorkflowExecutor(config.getWorkflowExecutorType(), state);
         try {
-            // 计算程序运行时间
-            startnTime = System.nanoTime();
-            startmTime = System.currentTimeMillis();
-            startDate = new Date();
-
             workflowExecutor.executeWorkflow();
-            LOGGER.info("372 try to print msg: "
-                    + state.getWorkflowTrace().getFirstMessageAction().getMessages().get(0).getCompleteResultingMessage());
         } catch (WorkflowExecutionException ex) {
             LOGGER.warn(
                     "The TLS protocol flow was not executed completely, follow the debug messages for more information.");
