@@ -1,8 +1,8 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- * <p>
+ *
  * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- * <p>
+ *
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -14,6 +14,7 @@ import config.ClientCommandConfig;
 import de.rub.nds.tlsattacker.core.config.Config;
 import de.rub.nds.tlsattacker.core.config.delegate.GeneralDelegate;
 import de.rub.nds.tlsattacker.core.config.delegate.ListDelegate;
+import de.rub.nds.tlsattacker.core.exceptions.TransportHandlerConnectException;
 import de.rub.nds.tlsattacker.core.exceptions.WorkflowExecutionException;
 import de.rub.nds.tlsattacker.core.protocol.message.*;
 import de.rub.nds.tlsattacker.core.state.State;
@@ -173,7 +174,8 @@ public class Client {
         }
     }
 
-    public static void startWorkflow(ClientCommandConfig config, Client TlsClient) throws IOException, InterruptedException {
+    public static void startWorkflow(ClientCommandConfig config, Client TlsClient)
+            throws IOException, InterruptedException {
 
         // 计算程序运行时间
         startnTime = System.nanoTime();
@@ -189,15 +191,14 @@ public class Client {
             LOGGER.debug("Reading workflow trace files from " + config.getWorkflowsInFiles());
 
             /**
-             * 先将目录下所有文件执行，
-             * 然后持续监控新增文件
+             * 先将目录下所有文件执行， 然后持续监控新增文件
              */
             Files.walkFileTree(Path.of(config.getWorkflowsInFiles()), new FileVisitor<Path>() {
                 /**
                  * 在访问任意目录前调用；
                  *
-                 * @param dir
-                 * @param attrs
+                 * @param  dir
+                 * @param  attrs
                  * @throws IOException
                  */
                 @Override
@@ -222,7 +223,7 @@ public class Client {
                         startudp(config.getSocket_host(), config.getSocket_port());
                     }
                     // 调用执行文件
-                    handleFile(tlsConfig,config,TlsClient,file.toString());
+                    handleFile(tlsConfig, config, TlsClient, file.toString());
                     return FileVisitResult.CONTINUE;
                 }
 
@@ -242,8 +243,8 @@ public class Client {
                 /**
                  * 在访问任意目录完成后调用；
                  *
-                 * @param dir
-                 * @param exc
+                 * @param  dir
+                 * @param  exc
                  * @return
                  * @throws IOException
                  */
@@ -286,9 +287,7 @@ public class Client {
                 // 重置监控事件，并准备下一次循环
                 key.reset();
             }
-            }
-
-
+        }
 
 //        State state = TlsClient.startTlsClient(tlsConfig, trace);
 
@@ -346,7 +345,7 @@ public class Client {
         }
     }
 
-    public State startTlsClient(Config config, WorkflowTrace trace) {
+    public State startTlsClient(Config config, WorkflowTrace trace) throws TransportHandlerConnectException {
 
         State state;
         if (trace == null) {
@@ -356,12 +355,31 @@ public class Client {
         }
         WorkflowExecutor workflowExecutor =
                 WorkflowExecutorFactory.createWorkflowExecutor(config.getWorkflowExecutorType(), state);
+
+
         try {
             workflowExecutor.executeWorkflow();
-        } catch (WorkflowExecutionException ex) {
-            LOGGER.warn(
-                    "The TLS protocol flow was not executed completely, follow the debug messages for more information.");
-            LOGGER.debug(ex.getLocalizedMessage(), ex);
+        } catch (TransportHandlerConnectException e) {
+
+            /***
+             * TODO:
+             * 2023-05-05 02:57:40
+             * 等待一段时间后重启
+             */
+
+            if (e.getCause().getMessage().toString().startsWith("Could not connect to")) {
+                System.out.println("Retrying in 5 seconds...");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    // Handle interrupted exception
+                }
+                return startTlsClient(config, trace);
+            }
+            System.out.println("fuck");
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            System.out.println(e.getCause().getMessage());
         }
         return state;
     }
@@ -370,8 +388,8 @@ public class Client {
         // 处理文件
         System.out.println("处理文件：" + path2file);
         try {
-            LOGGER.info(
-                    "---------------------------------------------------------------------------------------------");
+            LOGGER
+                    .info("---------------------------------------------------------------------------------------------");
             WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
             State state = TlsClient.startTlsClient(tlsConfig, trace);
 
