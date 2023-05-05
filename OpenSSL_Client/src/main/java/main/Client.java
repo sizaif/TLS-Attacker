@@ -376,7 +376,6 @@ public class Client {
                 }
                 return startTlsClient(config, trace);
             }
-            System.out.println("fuck");
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             System.out.println(e.getCause().getMessage());
@@ -391,6 +390,11 @@ public class Client {
             LOGGER
                     .info("---------------------------------------------------------------------------------------------");
             WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
+
+            Random random = new Random();
+            int sleepTime = random.nextInt(6) + 5; // 生成 5 到 10 秒之间的随机数
+
+            Thread.sleep(sleepTime * 1000);
             State state = TlsClient.startTlsClient(tlsConfig, trace);
 
             if (config.getWorkflowsOutFiles() != null) {
