@@ -1,8 +1,8 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- * <p>
+ *
  * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- * <p>
+ *
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -61,6 +61,9 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     @Parameter(names = "-workflow_output",
             description = "A path in which the executed workflow trace should be stored in")
     private String workflowOutput = null;
+    @Parameter(names = "-devinitdone_path",
+            description = "A path to initdone file which openssl s_server initdone")
+    private String devinitdone = "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_initdone.txt";
 
     @Parameter(names = "-workflow_in_files", description = "A path to workflow trace files")
     private String workflowsInFiles = null;
@@ -141,6 +144,10 @@ public class ClientCommandConfig extends TLSDelegateConfig {
 
     public String getWorkflowsOutFiles() {
         return workflowsOutFiles;
+    }
+
+    public String getDevinitdone() {
+        return devinitdone;
     }
 
     public void setWorkflowsOutFiles(String workflowsOutFiles) {

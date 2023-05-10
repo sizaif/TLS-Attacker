@@ -30,10 +30,9 @@ import sun.misc.SignalHandler;
 
 import javax.sound.sampled.Line;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.UnmarshalException;
 import javax.xml.stream.XMLStreamException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -63,6 +62,10 @@ public class Client {
     public static long endnTime;
     public static long endmTime;
     public static Date startDate, endDate;
+
+    public static boolean isShakeHandModifying = false;
+
+    public static String devinitdonepath;
 
     public static void main(String[] args) {
 
@@ -289,8 +292,6 @@ public class Client {
             }
         }
 
-//        State state = TlsClient.startTlsClient(tlsConfig, trace);
-
     }
 
     public static void startudp(String host, int port) throws SocketException {
@@ -345,7 +346,7 @@ public class Client {
         }
     }
 
-    public State startTlsClient(Config config, WorkflowTrace trace) throws TransportHandlerConnectException {
+    public State startTlsClient(Config config, WorkflowTrace trace) throws TransportHandlerConnectException, JAXBException {
 
         State state;
         if (trace == null) {
@@ -356,45 +357,100 @@ public class Client {
         WorkflowExecutor workflowExecutor =
                 WorkflowExecutorFactory.createWorkflowExecutor(config.getWorkflowExecutorType(), state);
 
-
         try {
             workflowExecutor.executeWorkflow();
+
+            /**
+             * TODO:
+             * 执行完成后：
+             * 1.
+             */
+            File devinitdonefile = new File(devinitdonepath);
+
+            try {
+                FileWriter fileWriter = new FileWriter(devinitdonefile, false); // true表示在文件末尾追加内容
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                // 写入内容
+                bufferedWriter.write("0");
+                // 关闭流
+                bufferedWriter.close();
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            isShakeHandModifying = false;
         } catch (TransportHandlerConnectException e) {
 
             /***
-             * TODO:
              * 2023-05-05 02:57:40
+             * 如果是因为服务端还未起来则
              * 等待一段时间后重启
              */
-
             if (e.getCause().getMessage().toString().startsWith("Could not connect to")) {
                 System.out.println("Retrying in 5 seconds...");
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException ex) {
                     // Handle interrupted exception
                 }
                 return startTlsClient(config, trace);
             }
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause());
-            System.out.println(e.getCause().getMessage());
+        } catch (WorkflowExecutionException ex) {
+            System.out.println("nnnn");
+            ex.printStackTrace();
         }
         return state;
+    }
+
+    public static void waitinitdone(ClientCommandConfig config) throws IOException, InterruptedException {
+
+        if (config.getDevinitdone() != null) {
+            devinitdonepath = config.getDevinitdone();
+
+            int index = devinitdonepath.lastIndexOf("/");
+            String[] parts = devinitdonepath.split("/");
+            String filename = parts[parts.length - 1];
+
+            String result_path = devinitdonepath.substring(0, index + 1);
+            System.out.println(result_path);
+            Path filePath = Paths.get(result_path);
+
+
+            Path directoryPath = filePath.getParent();
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            directoryPath.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+
+            while (true) {
+                WatchKey key = watchService.take();
+                for (WatchEvent<?> event : key.pollEvents()) {
+                    if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
+                        Path modifiedPath = (Path) event.context();
+                        if (modifiedPath.equals(filename)) {
+                            // 文件被修改
+                            if (!isShakeHandModifying) {
+                                isShakeHandModifying = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+                key.reset();
+            }
+        }
     }
 
     public static void handleFile(Config tlsConfig, ClientCommandConfig config, Client TlsClient, String path2file) {
         // 处理文件
         System.out.println("处理文件：" + path2file);
         try {
-            LOGGER
-                    .info("---------------------------------------------------------------------------------------------");
+            LOGGER.info("---------------------------------------------------------------------------------------------");
+
             WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
 
-            Random random = new Random();
-            int sleepTime = random.nextInt(6) + 5; // 生成 5 到 10 秒之间的随机数
+            // 等待 openssl server initdone 完成
+            waitinitdone(config);
 
-            Thread.sleep(sleepTime * 1000);
             State state = TlsClient.startTlsClient(tlsConfig, trace);
 
             if (config.getWorkflowsOutFiles() != null) {
@@ -419,6 +475,9 @@ public class Client {
 
             }
 
+        } catch (javax.xml.bind.UnmarshalException use) {
+            System.out.println("is here?");
+            System.out.println(use.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
