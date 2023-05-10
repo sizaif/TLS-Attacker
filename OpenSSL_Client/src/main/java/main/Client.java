@@ -412,10 +412,7 @@ public class Client {
             String[] parts = devinitdonepath.split("/");
             String filename = parts[parts.length - 1];
 
-            String result_path = devinitdonepath.substring(0, index + 1);
-            System.out.println(result_path);
-            Path filePath = Paths.get(result_path);
-
+            Path filePath = Paths.get(devinitdonepath);
 
             Path directoryPath = filePath.getParent();
             WatchService watchService = FileSystems.getDefault().newWatchService();
@@ -424,11 +421,20 @@ public class Client {
             while (true) {
                 WatchKey key = watchService.take();
                 for (WatchEvent<?> event : key.pollEvents()) {
+                    WatchEvent.Kind<?> kind = event.kind();
+                    if (kind == StandardWatchEventKinds.OVERFLOW) {
+                        continue;
+                    }
                     if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
-                        Path modifiedPath = (Path) event.context();
-                        if (modifiedPath.equals(filename)) {
+                        WatchEvent<Path> ev = (WatchEvent<Path>) event;
+                        Path modifiedPath = ev.context();
+                        System.out.println("modifledpath: " + modifiedPath);
+                        if (modifiedPath.toString().equals(filename)) {
+                            // 文件被修改
+                            System.out.println("File modified: " + filename);
                             // 文件被修改
                             if (!isShakeHandModifying) {
+                                System.out.println("file changed");
                                 isShakeHandModifying = true;
                                 return;
                             }
