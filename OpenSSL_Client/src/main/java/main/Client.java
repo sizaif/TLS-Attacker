@@ -40,6 +40,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static sun.misc.SignalHandler.SIG_DFL;
 import static sun.misc.SignalHandler.SIG_IGN;
@@ -418,36 +419,35 @@ public class Client {
             String[] parts = devinitdonepath.split("/");
             String filename = parts[parts.length - 1];
 
-            Path filePath = Paths.get(devinitdonepath);
-
-            Path directoryPath = filePath.getParent();
-            WatchService watchService = FileSystems.getDefault().newWatchService();
-            directoryPath.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
-
+            File filepath = new File(devinitdonepath);
             while (true) {
-                WatchKey key = watchService.take();
-                for (WatchEvent<?> event : key.pollEvents()) {
-                    WatchEvent.Kind<?> kind = event.kind();
-                    if (kind == StandardWatchEventKinds.OVERFLOW) {
-                        continue;
-                    }
-                    if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
-                        WatchEvent<Path> ev = (WatchEvent<Path>) event;
-                        Path modifiedPath = ev.context();
-                        System.out.println("modifledpath: " + modifiedPath);
-                        if (modifiedPath.toString().equals(filename)) {
-                            // 文件被修改
-                            System.out.println("File modified: " + filename);
-                            // 文件被修改
-                            if (!isShakeHandModifying) {
-                                System.out.println("file changed");
-                                isShakeHandModifying = true;
-                                return;
-                            }
+
+                try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+                    System.out.println("initfile: " + devinitdonepath);
+                    String line = reader.readLine();
+                    // 在这里对文件内容进行处理
+                    System.out.println("read: line: " + line);
+                    if (line.equals("1")) {
+                        // 文件被修改
+                        System.out.println("openssl s_server init done");
+                        // 文件被修改
+                        if (!isShakeHandModifying) {
+                            System.out.println("file changed");
+                            isShakeHandModifying = true;
+                            return;
                         }
                     }
+
+                } catch (IOException e) {
+                    System.err.println("Failed to read file: " + filepath.getAbsolutePath());
+                    e.printStackTrace();
                 }
-                key.reset();
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
