@@ -276,8 +276,13 @@ public class Client {
                     // 获取事件类型和文件名
                     WatchEvent.Kind<?> kind = event.kind();
                     String fileName = event.context().toString();
-                    String path2file = config.getWorkflowsInFiles() + "/" + fileName;
+                    String path2file = "";
 
+                    if (config.getWorkflowsInFiles().endsWith("/")) {
+                        path2file = config.getWorkflowsInFiles() + fileName;
+                    } else {
+                        path2file = config.getWorkflowsInFiles() + "/" + fileName;
+                    }
 //                        System.out.println("file: "+path2file);
                     // 如果是新增文件事件，则处理该文件
                     if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
@@ -376,10 +381,11 @@ public class Client {
                 // 关闭流
                 bufferedWriter.close();
                 fileWriter.close();
+                isShakeHandModifying = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            isShakeHandModifying = false;
+
         } catch (TransportHandlerConnectException e) {
 
             /***
@@ -446,6 +452,33 @@ public class Client {
         }
     }
 
+    public static boolean changefeedbackfile(ClientCommandConfig config, String path2file) {
+        if (config.getDevfeedbackpath() != null) {
+
+            File devfeedbackfile = new File(config.getDevfeedbackpath());
+            File workfile = new File(path2file);
+            try {
+                FileWriter fileWriter = new FileWriter(devfeedbackfile, true); // true表示在文件末尾追加内容
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                // 写入内容
+                bufferedWriter.write("(0,0,0,0,1)\n");
+                // 关闭流
+                bufferedWriter.close();
+                fileWriter.close();
+                if (!workfile.delete()) {
+                    System.out.println("delete " + path2file + " faild!");
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
+
     public static void handleFile(Config tlsConfig, ClientCommandConfig config, Client TlsClient, String path2file) {
         // 处理文件
         System.out.println("处理文件：" + path2file);
@@ -482,8 +515,19 @@ public class Client {
             }
 
         } catch (javax.xml.bind.UnmarshalException use) {
+            /**
+             * TODO:
+             * 说明文件输入不合规, 需要通知给mutator 为not interesting
+             * 修改feedback 添加 (0,0,0,0,1)
+             */
             System.out.println("is here?");
-            System.out.println(use.getMessage());
+            if (changefeedbackfile(config, path2file)) {
+                return;
+            } else {
+                System.out.println("error modified feedback error or feebackpath error");
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

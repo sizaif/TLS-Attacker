@@ -65,6 +65,9 @@ public class ClientCommandConfig extends TLSDelegateConfig {
             description = "A path to initdone file which openssl s_server initdone")
     private String devinitdone = "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_initdone.txt";
 
+    @Parameter(names = "-devfeedback_path",
+            description = "A path to feedback file which openssl s_server save to feedback")
+    private String devfeedbackpath = "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_feedback.txt";
     @Parameter(names = "-workflow_in_files", description = "A path to workflow trace files")
     private String workflowsInFiles = null;
     @Parameter(names = "-workflow_out_files", description = "A path to execute workflow trace file to save ")
@@ -148,6 +151,10 @@ public class ClientCommandConfig extends TLSDelegateConfig {
 
     public String getDevinitdone() {
         return devinitdone;
+    }
+
+    public String getDevfeedbackpath() {
+        return devfeedbackpath;
     }
 
     public void setWorkflowsOutFiles(String workflowsOutFiles) {
