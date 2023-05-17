@@ -1,8 +1,8 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- *
- * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- *
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -11,7 +11,6 @@ package de.rub.nds.tlsattacker.core.protocol.preparator;
 
 import de.rub.nds.modifiablevariable.util.ArrayConverter;
 import de.rub.nds.tlsattacker.core.constants.HandshakeByteLength;
-import de.rub.nds.tlsattacker.core.protocol.message.HandshakeMessage;
 import de.rub.nds.tlsattacker.core.protocol.message.HelloMessage;
 import de.rub.nds.tlsattacker.core.workflow.chooser.Chooser;
 import de.rub.nds.tlsattacker.transport.ConnectionEndType;
@@ -54,6 +53,9 @@ public abstract class HelloMessagePreparator<T extends HelloMessage> extends Han
 
     protected void prepareSessionIDLength() {
         msg.setSessionIdLength(msg.getSessionId().getValue().length);
+        System.out.println("sessionID length");
+        System.out.println(msg.getSessionId().getValue().length);
+
         LOGGER.debug("SessionIdLength: " + msg.getSessionIdLength().getValue());
     }
 

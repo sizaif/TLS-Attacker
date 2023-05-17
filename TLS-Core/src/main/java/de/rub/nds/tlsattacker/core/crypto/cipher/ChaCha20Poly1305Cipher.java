@@ -1,10 +1,14 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- *
- * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- *
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
+ * <p>
+ * TLS-AEAD-Cipher "Chacha20Poly1305", based on BouncyCastle's class
+ * "BcChaCha20Poly1305".
+ * See RFC7905 for further information.
  */
 /**
  * TLS-AEAD-Cipher "Chacha20Poly1305", based on BouncyCastle's class

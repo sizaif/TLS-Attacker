@@ -1,8 +1,8 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- *
- * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- *
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -224,15 +224,20 @@ public class WorkflowTraceSerializer {
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema workflowTraceSchema =
                 sf.newSchema(new StreamSource(WorkflowTraceSerializer.class.getResourceAsStream("/" + xsd_source)));
+
             workflowTraceSchema.newValidator();
+
             unmarshaller.setSchema(workflowTraceSchema);
+
             WorkflowTrace wt = (WorkflowTrace) unmarshaller.unmarshal(xsr);
+
             ModvarHelper helper = new ModvarHelper();
             List<ModifiableVariableField> allSentFields = helper.getAllSentFields(wt);
             for (ModifiableVariableField field : allSentFields) {
+                LOGGER.debug("field name: " + field.getField().getName());
                 if (field.getModifiableVariable() != null && field.getModifiableVariable().getOriginalValue() != null) {
                     LOGGER.warn(
-                        "Your WorkflowTrace still contains original values. These values will be deleted by TLS-Attacker and ignored for any computations. Use Modifications and/or the Config to change the contet of messages");
+                            "Your WorkflowTrace still contains original values. These values will be deleted by TLS-Attacker and ignored for any computations. Use Modifications and/or the Config to change the contet of messages");
                     break;
                 }
             }

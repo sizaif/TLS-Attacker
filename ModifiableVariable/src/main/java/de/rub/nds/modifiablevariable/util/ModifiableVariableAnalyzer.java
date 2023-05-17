@@ -1,8 +1,8 @@
 /**
  * ModifiableVariable - A Variable Concept for Runtime Modifications
- * <p>
+ *
  * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- * <p>
+ *
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -29,8 +29,7 @@ public class ModifiableVariableAnalyzer {
     /**
      * Lists all the modifiable variables declared in the given class
      *
-     * @param  object
-     *                Analyzed object
+     * @param object Analyzed object
      * @return A list of modifiable variable fields for the given object
      */
     public static List<Field> getAllModifiableVariableFields(Object object) {

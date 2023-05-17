@@ -1,8 +1,8 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- *
- * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- *
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -14,7 +14,6 @@ import de.rub.nds.tlsattacker.core.connection.OutboundConnection;
 import de.rub.nds.tlsattacker.core.constants.CipherSuite;
 import de.rub.nds.tlsattacker.core.constants.PRFAlgorithm;
 import de.rub.nds.tlsattacker.core.constants.ProtocolVersion;
-import de.rub.nds.tlsattacker.core.protocol.ProtocolMessageHandler;
 import de.rub.nds.tlsattacker.core.protocol.message.FinishedMessage;
 import de.rub.nds.tlsattacker.core.state.TlsContext;
 import de.rub.nds.tlsattacker.core.workflow.action.executor.SendMessageHelper;

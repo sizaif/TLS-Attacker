@@ -1,8 +1,8 @@
 /**
  * TLS-Attacker - A Modular Penetration Testing Framework for TLS
- *
- * Copyright 2014-2022 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- *
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -22,7 +22,7 @@ import de.rub.nds.tlsattacker.core.record.cipher.cryptohelper.KeySet;
 import de.rub.nds.tlsattacker.core.record.cipher.cryptohelper.KeySetGenerator;
 import de.rub.nds.tlsattacker.core.state.TlsContext;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

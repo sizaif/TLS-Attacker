@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>de.rub.nds.tlsattacker</groupId>
     <artifactId>TLS-Attacker</artifactId>
-    <version>3.8.1</version>
+    <version>DEV3.8.1</version>
     <packaging>pom</packaging>
     <inceptionYear>2015</inceptionYear>
     <name>TLS-Attacker</name>
@@ -37,53 +38,6 @@
         <url>https://github.com/RUB-NDS/TLS-Attacker/tree/master</url>
     </scm>
 
-    <developers>
-        <developer>
-            <id>jsomorovsky</id>
-            <name>Juraj Somorovsky</name>
-            <email>Juraj.Somorovsky@rub.de</email>
-            <url>https://www.nds.rub.de/</url>
-            <organization>NDS</organization>
-            <organizationUrl>https://www.nds.rub.de</organizationUrl>
-            <roles>
-                <role>Architect</role>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>ic0ns</id>
-            <name>Robert Merget</name>
-            <email>robert.merget@rub.de</email>
-            <url>http://www.nds.rub.de/</url>
-            <organization>NDS</organization>
-            <organizationUrl>https://www.nds.rub.de</organizationUrl>
-            <roles>
-                <role>Team lead</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>mmaehren</id>
-            <name>Marcel Maehren</name>
-            <email>marcel.maehren@rub.de</email>
-            <url>https://www.nds.rub.de/</url>
-            <organization>NDS</organization>
-            <organizationUrl>https://www.nds.rub.de</organizationUrl>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>NErinola</id>
-            <name>Nurullah Erinola</name>
-            <email>nurullah.erinola@rub.de</email>
-            <url>https://www.nds.rub.de/</url>
-            <organization>NDS</organization>
-            <organizationUrl>https://www.nds.rub.de</organizationUrl>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-    </developers>
     <modules>
         <module>Utils</module>
         <module>Transport</module>

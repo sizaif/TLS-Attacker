@@ -1,0 +1,45 @@
+<workflowTrace>
+    <Send>
+        <actionOptions/>
+        <messages>
+            <ClientHello>
+                <extensions>
+                    <ECPointFormat/>
+                    <EllipticCurves/>
+                    <SignatureAndHashAlgorithmsExtension/>
+                    <RenegotiationInfoExtension/>
+                </extensions>
+                <protocolVersion>
+                    <ByteArrayExplicitValueModification>
+                        <explicitValue>03 02</explicitValue>
+                    </ByteArrayExplicitValueModification>
+                </protocolVersion>
+                <random/>
+                <sessionId/>
+                <cipherSuites>
+                    <ByteArrayExplicitValueModification>
+                        <explicitValue>00 6B 00 67 00 A8 CC AB</explicitValue>
+                    </ByteArrayExplicitValueModification>
+                </cipherSuites>
+                <compressions/>
+            </ClientHello>
+        </messages>
+    </Send>
+    <GenericReceive/>
+    <Send>
+        <actionOptions/>
+        <messages>
+
+            <DHClientKeyExchange/>
+            <ChangeCipherSpec/>
+            <Finished/>
+        </messages>
+    </Send>
+    <GenericReceive/>
+    <Send>
+        <actionOptions/>
+        <messages>
+            <Application/>
+        </messages>
+    </Send>
+</workflowTrace>

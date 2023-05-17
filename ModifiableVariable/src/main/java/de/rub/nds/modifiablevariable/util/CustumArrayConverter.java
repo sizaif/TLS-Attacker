@@ -1,5 +1,5 @@
 /**
- * TLS-Attacker - A Modular Penetration Testing Framework for TLS
+ * ModifiableVariable - A Variable Concept for Runtime Modifications
  * <p>
  * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
  * <p>
@@ -52,7 +52,6 @@ public class CustumArrayConverter extends ArrayConverter {
                     }
                 }
             }
-
 
             /**
              * 1/2 概率处理， 1/2概率不处理

@@ -2,12 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.rub.nds</groupId>
+    <parent>
+        <groupId>de.rub.nds.tlsattacker</groupId>
+        <artifactId>TLS-Attacker</artifactId>
+        <version>DEV3.8.1</version>
+    </parent>
+    <name>ModifiableVariable</name>
     <artifactId>ModifiableVariable</artifactId>
-    <version>3.5.0</version>
     <packaging>jar</packaging>
 
-    <name>ModifiableVariable</name>
     <description>A Modifiable Variable concept allows for easy runtime modifications of basic data types like integers,
         booleans, or byte arrays
     </description>

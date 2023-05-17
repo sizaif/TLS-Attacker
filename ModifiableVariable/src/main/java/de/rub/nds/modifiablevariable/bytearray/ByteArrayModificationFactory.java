@@ -1,8 +1,8 @@
 /**
  * ModifiableVariable - A Variable Concept for Runtime Modifications
- * <p>
+ *
  * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
- * <p>
+ *
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -51,11 +51,8 @@ public class ByteArrayModificationFactory {
     public static final String FILE_NAME = "de/rub/nds/modifiablevariable/explicit/array.vec";
 
     /**
-     *
-     * @param  xor
-     *                       bytes to xor
-     * @param  startPosition
-     *                       negative numbers mean that the position is taken from the end
+     * @param xor           bytes to xor
+     * @param startPosition negative numbers mean that the position is taken from the end
      * @return variable modification
      */
     public static VariableModification<byte[]> xor(final byte[] xor, final int startPosition) {
