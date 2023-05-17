@@ -94,6 +94,7 @@
         <module>TraceTool</module>
         <module>TLS-Proxy</module>
         <module>OpenSSL_Client</module>
+        <module>ModifiableVariable</module>
     </modules>
     <dependencies>
         <dependency>

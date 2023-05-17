@@ -1,0 +1,83 @@
+/**
+ * ModifiableVariable - A Variable Concept for Runtime Modifications
+ * <p>
+ * Copyright 2014-2023 Ruhr University Bochum, Paderborn University, Hackmanit GmbH
+ * <p>
+ * Licensed under Apache License, Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0.txt
+ */
+
+package de.rub.nds.modifiablevariable.biginteger;
+
+import de.rub.nds.modifiablevariable.VariableModification;
+
+import java.math.BigInteger;
+import java.util.Random;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement
+@XmlType(propOrder = {"shift", "modificationFilter"})
+@XmlAccessorType(XmlAccessType.FIELD)
+public class BigIntegerShiftRightModification extends VariableModification<BigInteger> {
+
+    private static final int MAX_SHIFT_LENGTH = 32;
+
+    private int shift;
+
+    public BigIntegerShiftRightModification() {
+
+    }
+
+    public BigIntegerShiftRightModification(int shift) {
+        this.shift = shift;
+    }
+
+    @Override
+    protected BigInteger modifyImplementationHook(BigInteger input) {
+        if (input == null) {
+            input = BigInteger.ZERO;
+        }
+        return input.shiftRight(shift);
+    }
+
+    public int getShift() {
+        return shift;
+    }
+
+    public void setShift(int shift) {
+        this.shift = shift;
+    }
+
+    @Override
+    public VariableModification<BigInteger> getModifiedCopy() {
+        return new BigIntegerShiftRightModification(shift + new Random().nextInt(MAX_SHIFT_LENGTH));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + this.shift;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BigIntegerShiftRightModification other = (BigIntegerShiftRightModification) obj;
+        if (this.shift != other.shift) {
+            return false;
+        }
+        return true;
+    }
+}

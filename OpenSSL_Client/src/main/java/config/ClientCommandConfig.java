@@ -6,6 +6,7 @@
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
+
 package config;
 
 import com.beust.jcommander.Parameter;
@@ -61,13 +62,14 @@ public class ClientCommandConfig extends TLSDelegateConfig {
     @Parameter(names = "-workflow_output",
             description = "A path in which the executed workflow trace should be stored in")
     private String workflowOutput = null;
-    @Parameter(names = "-devinitdone_path",
-            description = "A path to initdone file which openssl s_server initdone")
-    private String devinitdone = "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_initdone.txt";
+    @Parameter(names = "-devinitdone_path", description = "A path to initdone file which openssl s_server initdone")
+    private String devinitdone =
+            "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_initdone.txt";
 
     @Parameter(names = "-devfeedback_path",
             description = "A path to feedback file which openssl s_server save to feedback")
-    private String devfeedbackpath = "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_feedback.txt";
+    private String devfeedbackpath =
+            "/home/workhome/llvm_test/llvm-tutorial-opt/work07/dev/out/server_log/dev_feedback.txt";
     @Parameter(names = "-workflow_in_files", description = "A path to workflow trace files")
     private String workflowsInFiles = null;
     @Parameter(names = "-workflow_out_files", description = "A path to execute workflow trace file to save ")

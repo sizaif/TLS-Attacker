@@ -6,6 +6,7 @@
  * Licensed under Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0.txt
  */
+
 package main;
 
 import com.beust.jcommander.JCommander;
@@ -352,7 +353,8 @@ public class Client {
         }
     }
 
-    public State startTlsClient(Config config, WorkflowTrace trace) throws TransportHandlerConnectException, JAXBException {
+    public State startTlsClient(Config config, WorkflowTrace trace)
+            throws TransportHandlerConnectException, JAXBException {
 
         State state;
         if (trace == null) {
@@ -367,9 +369,7 @@ public class Client {
             workflowExecutor.executeWorkflow();
 
             /**
-             * TODO:
-             * 执行完成后：
-             * 1.
+             * TODO: 执行完成后： 1.
              */
             File devinitdonefile = new File(devinitdonepath);
 
@@ -390,9 +390,7 @@ public class Client {
         } catch (TransportHandlerConnectException e) {
 
             /***
-             * 2023-05-05 02:57:40
-             * 如果是因为服务端还未起来则
-             * 等待一段时间后重启
+             * 2023-05-05 02:57:40 如果是因为服务端还未起来则 等待一段时间后重启
              */
             if (e.getCause().getMessage().toString().startsWith("Could not connect to")) {
                 System.out.println("Retrying in 5 seconds...");
@@ -478,12 +476,12 @@ public class Client {
         return false;
     }
 
-
     public static void handleFile(Config tlsConfig, ClientCommandConfig config, Client TlsClient, String path2file) {
         // 处理文件
         System.out.println("处理文件：" + path2file);
         try {
-            LOGGER.info("---------------------------------------------------------------------------------------------");
+            LOGGER
+                    .info("---------------------------------------------------------------------------------------------");
 
             WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
 
@@ -516,17 +514,15 @@ public class Client {
 
         } catch (javax.xml.bind.UnmarshalException use) {
             /**
-             * TODO:
-             * 说明文件输入不合规, 需要通知给mutator 为not interesting
-             * 修改feedback 添加 (0,0,0,0,1)
+             * TODO: 说明文件输入不合规, 需要通知给mutator 为not interesting 修改feedback 添加 (0,0,0,0,1)
              */
             System.out.println("is here?");
-            if (changefeedbackfile(config, path2file)) {
-                return;
-            } else {
-                System.out.println("error modified feedback error or feebackpath error");
-            }
-
+            use.printStackTrace();
+//            if (changefeedbackfile(config, path2file)) {
+//                return;
+//            } else {
+//                System.out.println("error modified feedback error or feebackpath error");
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
