@@ -392,6 +392,10 @@ public class Client {
             /***
              * 2023-05-05 02:57:40 如果是因为服务端还未起来则 等待一段时间后重启
              */
+
+            System.out.println("printf msg");
+            System.out.println(e.getCause().getMessage().toString());
+            System.out.println("_)_____________________");
             if (e.getCause().getMessage().toString().startsWith("Could not connect to")) {
                 System.out.println("Retrying in 5 seconds...");
                 try {
@@ -452,7 +456,7 @@ public class Client {
 
     public static boolean changefeedbackfile(ClientCommandConfig config, String path2file) {
         if (config.getDevfeedbackpath() != null) {
-
+            System.out.println("files format error , change feedback is not interesting");
             File devfeedbackfile = new File(config.getDevfeedbackpath());
             File workfile = new File(path2file);
             try {
@@ -464,9 +468,9 @@ public class Client {
                 // 关闭流
                 bufferedWriter.close();
                 fileWriter.close();
-                if (!workfile.delete()) {
-                    System.out.println("delete " + path2file + " faild!");
-                }
+//                if (!workfile.delete()) {
+//                    System.out.println("delete " + path2file + " faild!");
+//                }
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -483,7 +487,8 @@ public class Client {
             LOGGER
                     .info("---------------------------------------------------------------------------------------------");
 
-            WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
+//            WorkflowTrace trace = WorkflowTraceSerializer.secureRead(new FileInputStream(path2file));
+            WorkflowTrace trace = WorkflowTraceSerializer.insecureRead(new FileInputStream(path2file));
 
             // 等待 openssl server initdone 完成
             waitinitdone(config);
@@ -514,15 +519,16 @@ public class Client {
 
         } catch (javax.xml.bind.UnmarshalException use) {
             /**
-             * TODO: 说明文件输入不合规, 需要通知给mutator 为not interesting 修改feedback 添加 (0,0,0,0,1)
+             * TODO: 说明文件输入不合规, 需要通知给 mutator 为not interesting 修改feedback 添加 (0,0,0,0,1)
              */
             System.out.println("is here?");
             use.printStackTrace();
-//            if (changefeedbackfile(config, path2file)) {
-//                return;
-//            } else {
-//                System.out.println("error modified feedback error or feebackpath error");
-//            }
+            if (changefeedbackfile(config, path2file)) {
+                System.out.println("go on ");
+                return;
+            } else {
+                System.out.println("error modified feedback error or feebackpath error");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
